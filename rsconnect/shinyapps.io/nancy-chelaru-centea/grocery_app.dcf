@@ -1,0 +1,12 @@
+name: grocery_app
+title: grocery_app
+username:
+account: nancy-chelaru-centea
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1221846
+bundleId: 2429642
+url: https://nancy-chelaru-centea.shinyapps.io/grocery_app/
+when: 1568990411.66417
+asMultiple: FALSE
+asStatic: FALSE

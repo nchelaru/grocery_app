@@ -1,0 +1,12 @@
+name: shinydb
+title: shinydb
+username:
+account: nancy-chelaru-centea
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1201421
+bundleId: 2422621
+url: https://nancy-chelaru-centea.shinyapps.io/shinydb/
+when: 1568775997.46675
+asMultiple: FALSE
+asStatic: FALSE
