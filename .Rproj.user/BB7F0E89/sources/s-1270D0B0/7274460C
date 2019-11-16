@@ -5,16 +5,16 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "992475877",
+    "hash" : "0",
     "id" : "7274460C",
-    "lastKnownWriteTime" : 1573838386,
-    "last_content_update" : 1573838386130,
+    "lastKnownWriteTime" : 1573843850,
+    "last_content_update" : 1573843850911,
     "path" : "~/Documents/GitHub/grocery_app/app.R",
     "project_path" : "app.R",
     "properties" : {
-        "cursorPosition" : "661,115",
+        "cursorPosition" : "161,7",
         "docOutlineVisible" : "1",
-        "scrollLine" : "659"
+        "scrollLine" : "145"
     },
     "read_only" : false,
     "read_only_alternatives" : [

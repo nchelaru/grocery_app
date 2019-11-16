@@ -18,12 +18,14 @@ library(V8)
 library(plyr)
 library(dplyr)
 library(shinyBS)
+library(shinyWidgets)
+library(icon)
 
 source("functions.R")
 
 
-
 jscode <- "shinyjs.refresh = function() { history.go(0); }"
+
 
 options(
   spinner.color = "#0275D8",
@@ -127,32 +129,36 @@ card <- function(.img, item, store, valid_from, valid_to) {
 
 
 
-sidebar <- dashboardSidebar(sidebarMenu(
-  id = "tabs", 
-  menuItem(
-    HTML("<b>Upload receipt</b>"),
-    tabName = "upload",
-    icon = icon("receipt")
+## Define UI
+sidebar <- dashboardSidebar(
+  sidebarMenu(
+    id = "tabs", 
+    menuItem(
+      HTML("<b>Upload receipt</b>"),
+      tabName = "upload",
+      icon = icon("receipt")
+    ),
+    menuItem(HTML("<b>View purchase history</b>"),
+             tabName = 'history',
+             icon=icon("shopping-cart")
+    ),
+    menuItem(HTML("<b>Browse the weekly flyers</b>"),
+             tabName = 'flyers',
+             icon=icon("newspaper")
+    )),
+  textInput(
+    "search_box",
+    label = h4("Search the flyers:"),
+    width = NULL,
+    placeholder = "Enter item or store name"
   ),
-  menuItem(HTML("<b>View purchase history</b>"),
-           tabName = 'history',
-           icon=icon("shopping-cart")
-           ),
-  menuItem(HTML("<b>Browse the weekly flyers</b>"),
-           tabName = 'flyers',
-           icon=icon("newspaper")
-)), 
-textInput(
-  "search_box",
-  label = HTML("<p style='color:black;'>Search the flyers</p>"),
-  width = NULL,
-  placeholder = "Enter item or store name"
-),
-splitLayout(actionButton("search_btn", "Search", class = "btn-primary"),
-            actionButton("reset_btn", "Clear", class = "btn-primary"))
+  splitLayout(
+    actionButton("search_btn", "Search", class = "btn-primary"),
+    actionButton("reset_btn", "Clear", class = "btn-primary")),
+  uiOutput('store_list')
 )         
-           
-           
+
+
 
 
 
@@ -163,50 +169,65 @@ body <- dashboardBody(tabItems(
       shinyjs::useShinyjs(),
       extendShinyjs(text = jscode),
       shinyjs::inlineCSS(appCSS),
-      fluidRow(HTML("<h3>Upload a shopping receipt here to record your purchase history! <a id=\"upload_help\" class=\"action-button\"><i class=\"fa fa-question-circle\"></i></a></h3>"), 
-               style='padding-left:2%;'),
-      fluidRow(column(
-        4,
-        div(
-          id = "form",
-          
-          dateInput("date", "Date:", value = Sys.time()),
-          
-          selectInput(
-            "store",
-            "Store",
-            c("",  "Loblaws", "H-Mart", "Shoppers Drug Mart", "Whole Foods")
-          ),
-          
-          fileInput(
-            "receipt",
-            "Upload receipt",
-            multiple = FALSE,
-            accept = c("image/jpeg",
-                       "image/png",
-                       ".jpeg", ".png", ".jpg")
-          ),
-          
-          actionButton("submit", "Submit", class = "btn-success"),
-          
-          shinyjs::hidden(span(id = "submit_msg", "Submitting..."),
-                          div(id = "error",
-                              div(
-                                br(), tags$b("Error: "), span(id = "error_msg")
-                              )))
-        ),
+      fluidRow(column(3,
+                      br(),
+        flipBox(id = 1, width = 12, 
+                front_btn_text = "How to prepare your receipt",
+                back_btn_text = NULL,
+                main_img = "https://image.flaticon.com/icons/svg/138/138360.svg",
+                header_img = "https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2089&q=80",
+                front_title = "Receipt upload",
+                back_title = NULL,
+                div(id = "form",
+                    dateInput("date", "Date of purchase:", value = Sys.time()),
+                    selectInput(
+                      "store",
+                      "Store",
+                      c("", "Bloor Street Market", "Bulk Barn", "Loblaws", "Galleria", "H-Mart", "Metro", 
+                        "Shoppers Drug Mart", "Sobeys", "T&T Supermarket", "Whole Foods")
+                    ),
+                    fileInput(
+                      "receipt",
+                      "Upload receipt",
+                      multiple = FALSE,
+                      accept = c("image/jpeg",
+                                 "image/png",
+                                 ".jpeg", ".png", ".jpg")
+                    ),
+                    br(), 
+                    actionButton("submit", "Submit", class = "btn-success"),
+                    br(), 
+                    shinyjs::hidden(span(id = "submit_msg", "Submitting..."),
+                                    div(id = "error",
+                                        div(
+                                          br(), tags$b("Error: "), span(id = "error_msg")
+                                        ))),
+                    
+                    
+                    
+                    style='padding: 20px 30px 20px 30px;'),
         
         shinyjs::hidden(div(
           id = "thankyou_msg",
-          h3("Thanks, your response was submitted successfully!"),
+          h3("Your receipt was uploaded successfully!"),
+          br(),
           actionLink("submit_another", "Submit another response")
         )),
-        style='padding-left:2%;'),
-      
-      column(8, br(),
-             withSpinner(
-               DTOutput("contents"), type = 1
-             ), style='padding-right: 5%;'))
+         
+        back_content = HTML('<div style="align=left;">
+        <h4>Please crop the image to <i>only</i> contain the purchased items:</h4>
+        <br>
+        <center><img src="https://i.imgur.com/oN67aUk.jpg" width=75%></center>
+        </div>'))),
+        
+        column(9, br(),
+               box(withSpinner(DTOutput("contents"), type = 1), hr(), splitLayout(uiOutput('delete_btn'), uiOutput('add_btn')),
+                 title = "Purchases",
+                 width = 12,
+                 solidHeader = TRUE,
+                 status = 'danger',
+                 collapsible = FALSE
+               )))
     )
   ),
   tabItem(tabName = "history",
@@ -219,8 +240,8 @@ body <- dashboardBody(tabItems(
     tabName = "flyers",
     fluidPage(
       tags$head(
-      tags$style(
-        '.card {
+        tags$style(
+          '.card {
          width: auto;
          height: auto;
          clear: both; 
@@ -246,34 +267,34 @@ body <- dashboardBody(tabItems(
         background-color: #ECF0F5;
         border: 0;
         }'
-      )
-    ),
-    fluidRow(
-              actionButton("metro_btn", 
-                            label = img(src="https://www.metro.ca/images/components/logo/logo--metro.png", width="90%"),
-                            class = "btn store-button"),
-              actionButton("wholefoods_btn", 
-                           label = img(src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Whole_Foods_Market_logo.svg", width="70%"),
-                           class = "btn store-button"),
-              actionButton("fortinos_btn", 
-                           label = img(src="https://www.waterdownbia.ca/wp-content/uploads/2015/05/13598_logo-fortinos.png", width="100%"),
-                           class = "btn store-button"),
-              actionButton("sobeys_btn", 
-                           label = img(src="https://2rt9loawzcmbvlze40mhj9n0-wpengine.netdna-ssl.com/wp-content/themes/sobeys-com/images/Sobeys_Logo_2.svg", width="90%"),
-                           class = "btn store-button"),
-              actionButton("bulkbarn_btn", 
-                           label = img(src="https://www.tamarackcentre.ca/wp-content/uploads/2018/06/bulkbarn.png", width="95%"),
-                           class = "btn store-button"),
-              actionButton("loblaws_btn", 
-                           label = img(src="https://can-cdn.azureedge.net/logos/Loblaws.PNG", width="95%"),
-                           class = "btn store-button")
-             ),
-    fluidRow(withSpinner(htmlOutput("cards"), type = 1),
-    shinyjs::hidden(span(id = "search_msg", "Search..."),
-                    div(id = "error",
-                        div(
-                          br(), tags$b("Error: "), span(id = "error_msg")
-                        )))))
+        )
+      ),
+      fluidRow(
+        actionButton("metro_btn", 
+                     label = img(src="https://www.metro.ca/images/components/logo/logo--metro.png", width="90%"),
+                     class = "btn store-button"),
+        actionButton("wholefoods_btn", 
+                     label = img(src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Whole_Foods_Market_logo.svg", width="70%"),
+                     class = "btn store-button"),
+        actionButton("fortinos_btn", 
+                     label = img(src="https://www.waterdownbia.ca/wp-content/uploads/2015/05/13598_logo-fortinos.png", width="100%"),
+                     class = "btn store-button"),
+        actionButton("sobeys_btn", 
+                     label = img(src="https://2rt9loawzcmbvlze40mhj9n0-wpengine.netdna-ssl.com/wp-content/themes/sobeys-com/images/Sobeys_Logo_2.svg", width="90%"),
+                     class = "btn store-button"),
+        actionButton("citymarket_btn", 
+                     label = img(src="https://i.ibb.co/ryJ4TNy/city-market.png", width="95%"),
+                     class = "btn store-button"),
+        actionButton("loblaws_btn", 
+                     label = img(src="https://can-cdn.azureedge.net/logos/Loblaws.PNG", width="95%"),
+                     class = "btn store-button")
+      ),
+      fluidRow(withSpinner(htmlOutput("cards"), type = 1),
+               shinyjs::hidden(span(id = "search_msg", "Search..."),
+                               div(id = "error",
+                                   div(
+                                     br(), tags$b("Error: "), span(id = "error_msg")
+                                   )))))
   )
 ))
 
@@ -281,13 +302,14 @@ body <- dashboardBody(tabItems(
 
 # We'll save it in a variable `ui` so that we can preview it in the console
 ui <- dashboardPagePlus(title = "A Pinch of This, A Dash of That", 
-            dashboardHeader(title = "A Pinch of This, A Dash of That", 
-                                    titleWidth = 350),
-                    sidebar,
-                    body, 
-                    skin="purple-light",
-                    sidebar_fullCollapse = TRUE,
-                    md=FALSE)
+                        dashboardHeader(title = "A Pinch of This, A Dash of That", 
+                                        titleWidth = 350),
+                        sidebar,
+                        body, 
+                        skin="purple",
+                        sidebar_fullCollapse = TRUE,
+                        md=FALSE)
+
 
 
 ## define server
@@ -332,88 +354,11 @@ server <- function(input, output, session) {
     i <- 1
     
     if (script_type() == "Shoppers Drug Mart") {
-      for (r in strsplit(v, '\t\r\n')) {
-        print(i)
-        
-        k[[i]] <- strsplit(r, '\t')
-        
-        print(k[[i]])
-        
-        i <- i + 1
-      }
-      
-      z <- as.data.frame(do.call(rbind, k[[1]]))
-      
-      colnames(z) <-
-        c('Item', 'UnitPrice', 'TotalPrice')
-      
-      for (x in c('UnitPrice', 'TotalPrice')) {
-        z[[x]] <- sub(" .*", "", z[[x]])
-        z[[x]] <- gsub("$", "", z[[x]])
-      }
-      
-      z$date <- as.character(receipt_date())
-      
-      z$store <- script_type()
-      
-      z
+      res <- shoppers_parse(v, k, i, receipt_date(), script_type())
     } else if (script_type() == "Whole Foods") {
-      
-      for (r in strsplit(v, '\t\r\n')) {
-        k[[i]] <- strsplit(r, '\t')
-        i <- i + 1
-      }
-      
-      df <- as.data.frame(do.call(rbind, k[[1]]))
-      
-      df$V3 <- NULL
-      
-      df <- dplyr::filter(df, !grepl("ITEM", V1) & !grepl("TARE", V2) & !grepl("ITEM", V2 ))
-      
-      colnames(df) <- c('Item', 'TotalPrice')
-      
-      df$UnitPrice <- " "
-      
-      df$TotalPrice <-
-        sapply(df$TotalPrice, function(x)
-          gsub("\\$", "", x))
-      
-      df$date <- as.character(receipt_date())
-      
-      df$store <- script_type()
-      
-      df
+      res <- wf_parse(v, k, i, receipt_date(), script_type())
     } else if (script_type() == "H-Mart") {
-      
-      for (r in strsplit(v, '\t\r\n')) {
-        k[[i]] <- strsplit(r, '\t')
-        i <- i + 1
-      }
-      
-      z <- as.data.frame(do.call(rbind, k[[1]]))
-      
-      z <- z[seq(1, nrow(z), 2) ,]
-      
-      z <- separate(
-          data = z,
-          col = 'V1',
-          into = c("Item", "UnitPrice"),
-          sep = " @"
-        )
-      
-      colnames(z) <-
-        c("Item", "UnitPrice", "TotalPrice")
-      
-      z$UnitPrice <-
-        sapply(z$UnitPrice, function(x)
-          gsub("\\$", "", x))
-      
-      z$date <- as.character(receipt_date())
-      
-      z$store <- script_type()
-      
-      z
-      
+      res <- hmart_parse(v, k, i, receipt_date(), script_type())
     }
     
   }
@@ -445,14 +390,35 @@ server <- function(input, output, session) {
   
   
   
+ 
   output$contents <- DT::renderDataTable({
-    datatable(if (is.null(input$receipt$datapath)) {
+    datatable(
+      if (is.null(input$receipt$datapath)) {
       df <- data.frame()
     } else {
       df <- as.data.frame(get_res(imgur_upload(re1())[1]))
-      
       df
     }, editable = T)
+  })
+  
+  observe({
+    if (!is.null(input$contents_rows_selected)) {
+      output$delete_btn <- renderUI(actionButton("deleteRows", "Delete"))
+      output$add_btn <- renderUI(actionButton("addRows", "Insert"))
+    } else {
+      shinyjs::hide('deleteRows')
+      shinyjs::hide('addRows')
+    }
+  })
+  
+  values <- reactiveValues(dfWorking = df)
+  
+  observeEvent(input$deleteRows, { 
+    df <- df[-as.numeric(input$contents_rows_selected),]
+    
+    output$contents <- DT::renderDataTable({
+      df
+    })
   })
   
   
@@ -483,6 +449,9 @@ server <- function(input, output, session) {
     saveData(df)
     
   })
+  
+  
+  
   
   
   # When the Submit button is clicked, submit the response
@@ -519,7 +488,6 @@ server <- function(input, output, session) {
   
   
   ## submit another response
-  
   output$contents <- DT::renderDataTable({
     datatable(if (is.null(input$receipt$datapath)) {
       df <- data.frame()
@@ -533,8 +501,6 @@ server <- function(input, output, session) {
   
   observeEvent(input$submit_another, {
     js$refresh()
-    
-    
   })
   
   pur_hist <- dbGetQuery(con, "SELECT * FROM apptest ORDER BY date DESC")
@@ -551,6 +517,8 @@ server <- function(input, output, session) {
   })
   
   
+  
+  
   ## No search term
   observe({
     if (input$tabs == "flyers" & input$search_box == "") {
@@ -560,67 +528,54 @@ server <- function(input, output, session) {
   })
   
   
-  observeEvent(input$search_btn, {
+  
+  ## Any search term, respond to 
+  observeEvent(c(req(input$search_box != "", input$search_btn)), {
     shinyjs::hide('metro_btn')
     shinyjs::hide("wholefoods_btn")
     shinyjs::hide("loblaws_btn")
-    shinyjs::hide("bulkbarn_btn")
+    shinyjs::hide("citymarket_btn")
     shinyjs::hide("sobeys_btn")
     shinyjs::hide("fortinos_btn")
     shinyjs::show("cards")
     
-  
-    ## Any search term
+    
     search_term <- gsub(" ", "+", input$search_box)
     
     res_json <- get_flyer(search_term)
     
-    if (length(res_json$items) ==0) {
-      output$cards <- renderText(HTML("<br><br><center><h2>Sorry, your query did not return any results.</h2></center>"))
-    } else {
-      
-      filtered_data <- parse_flyer(res_json)
-      
-      updateTabItems(session, "tabs", "flyers")
-      
-      output$cards <- renderUI({
-        # First make the cards
-        args <-
-          lapply(1:dim(filtered_data)[1], function(x)
-            card(filtered_data[x, "clipping_image_url"],
-                 store = filtered_data[x, "merchant_name"],
-                 item = filtered_data[x, "name"],
-                 valid_from = filtered_data[x, "valid_from"],
-                 valid_to = filtered_data[x, "valid_to"]))
+    output$store_list <- renderUI(prettyRadioButtons("select_store", h4("See items at:"), 
+                                                     choices = unique_stores(input$search_box), 
+                                                     selected = NULL, inline = FALSE, width = NULL)) 
+    
+    shinyjs::show('store_list')
+    
+    
+    
+    ncount <- reactive({input$select_store})
 
-        num <- dim(filtered_data)[1]
-      
-        
-        if (num %% 4 == 0) {
-          num2 <- num / 4
-  
-          num3 <- num2 -1
-  
-          cols <-
-            lapply(seq(num2, num2*4, num2), function(x) {
-              column(width = 3, verticalLayout(args[(x - num3):x], fluid = TRUE))
-            })
-        } else {
-          num2 <- num %/% 4 + 1
-  
-          cols <-
-            lapply(seq(num2, num2*4, num2), function(x) {
-              column(width = 3, verticalLayout(args[(x - num%/%4):x], fluid = TRUE))
-            })
-        }
-        
-        
-        # basically the same as flowLayout(cards[[1]], cards[[2]],...)
-        do.call(shiny::fluidRow, cols)
+    output$ncount_2 <- renderPrint({
+      ncount()
     })
-  }
-})
+    
+    shinyjs::show('ncount_2')
+    
+
+
+    
+    if (length(res_json$items) == 0) {
+        output$cards <- renderText(HTML("<br><br><center><h2>Sorry, your query did not return any results.</h2></center>"))
+    } else {
+      observeEvent(input$select_store, {
+        output$cards <- create_grid_item(session, search_term, input$select_store)
+      })
+        
+    }
+   }) 
+   
+ 
   
+  ## Reset search box
   observeEvent(input$reset_btn, {
     shinyjs::reset("search_box")
     
@@ -629,9 +584,10 @@ server <- function(input, output, session) {
     shinyjs::show('metro_btn')
     shinyjs::show("wholefoods_btn")
     shinyjs::show("loblaws_btn")
-    shinyjs::show("bulkbarn_btn")
+    shinyjs::show("citymarket_btn")
     shinyjs::show("sobeys_btn")
     shinyjs::show("fortinos_btn")
+    shinyjs::hide('store_list')
     
     updateTabItems(session, "tabs", "flyers")
     
@@ -639,85 +595,44 @@ server <- function(input, output, session) {
 
 
   
-  ## By store
-  observeEvent(input$metro_btn | input$wholefoods_btn | input$fortinos_btn | input$sobeys_btn | input$bulkbarn_btn | input$loblaws_btn,
-               {
-                  if (input$metro_btn) {
-                    search_term = "metro"
-                  } else if (input$wholefoods_btn) {
-                    search_term = "whole+foods" 
-                  }  else if (input$fortinos_btn) {
-                    search_term = "fortinos" 
-                  } else if (input$sobeys_btn) {
-                    search_term = "sobeys" 
-                  } else if (input$bulkbarn_btn) {
-                    search_term = "bulk+barn"
-                  } else {
-                    search_term = "loblaws"
-                  }
-                  
-                  res_json <- get_flyer(search_term)
-                  
-                  if (length(res_json$items) == 0) {
-                    output$cards <-  renderText(HTML("<br><br><center><h2>Oops, the flyer is currently unavailable!</h2></center>"))
-              
-                  } else {
-                    filtered_data <- parse_flyer(res_json)
-                    
-                    updateTabItems(session, "tabs", "flyers")
-                    
-                    output$cards <- renderUI({
-                      # First make the cards
-                      args <-
-                        lapply(1:dim(filtered_data)[1], function(x)
-                          card(filtered_data[x, "clipping_image_url"],
-                               store = filtered_data[x, "merchant_name"],
-                               item = filtered_data[x, "name"],
-                               valid_from = filtered_data[x, "valid_from"],
-                               valid_to = filtered_data[x, "valid_to"]))
-                      
-                      num <- dim(filtered_data)[1]
-                      
-                      
-                      if (num %% 4 == 0) {
-                        num2 <- num / 4
-                        
-                        num3 <- num2 -1
-                        
-                        cols <-
-                          lapply(seq(num2, num2*4, num2), function(x) {
-                            column(width = 3, verticalLayout(args[(x - num3):x], fluid = TRUE))
-                          })
-                      } else {
-                        num2 <- num %/% 4 + 1
-                        
-                        cols <-
-                          lapply(seq(num2, num2*4, num2), function(x) {
-                            column(width = 3, verticalLayout(args[(x - num%/%4):x], fluid = TRUE))
-                          })
-                      }
-                      
-                      
-                      # basically the same as flowLayout(cards[[1]], cards[[2]],...)
-                      do.call(shiny::fluidRow, cols)
-                    })
-                  }
-                })
-  
-  
-  observeEvent(input$upload_help, {
-    showModal(modalDialog(
-      title = HTML("<h3>How to prepare an image of the receipt:</h3>"),
-      HTML("<h4>1. Take a picture of the receipt.</h4>"),
-      HTML("<h4>2. Crop the picture so that it only contains the purchased items:</h4>"),
-      HTML('<center><img src="https://i.imgur.com/oN67aUk.jpg" width=60%></center>'), br(),
-      HTML("<h4>3. Save and upload this image on this page, along with the purchase date and store name.</h4>"),
-      easyClose = TRUE
-    ))
+  ## Display flyer by store
+  observeEvent(input$wholefoods_btn, {
+    output$cards <- create_grid_store(session, "whole+foods")
   })
+  
+  observeEvent(input$metro_btn, {
+    output$cards <- create_grid_store(session, "metro")
+  })
+  
+  observeEvent(input$fortinos_btn, {
+    output$cards <-create_grid_store(session, "fortinos")
+  })
+  
+  observeEvent(input$sobeys_btn, {
+    output$cards <- create_grid_store(session, "sobeys")
+  })
+  
+  observeEvent(input$citymarket_btn, {
+    output$cards <- create_grid_store(session, "independent+city+market")
+  })
+  
+  observeEvent(input$loblaws_btn, {
+    output$cards <- create_grid_store(session, "loblaws")
+  })
+  
+  
+  
+  
+
    
 
 }
+
+
+
+
+
+
 
 
 
