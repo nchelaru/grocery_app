@@ -20,21 +20,23 @@ library(dplyr)
 library(shinyBS)
 library(shinyWidgets)
 library(icon)
+library(data.table)
+library(rhandsontable)
+library(slickR)
+library(svglite)
+library(tippy)
 
 source("functions.R")
 
 
-jscode <- "shinyjs.refresh = function() { history.go(0); }"
 
+jscode <- "shinyjs.refresh = function() { history.go(0); }"
 
 options(
   spinner.color = "#0275D8",
   spinner.color.background = "#ffffff",
   spinner.size = 1
 )
-
-# directory where responses get stored
-responsesDir <- file.path(".")
 
 ## Connect to podcast
 con <- dbConnect(
@@ -47,6 +49,13 @@ con <- dbConnect(
   sslmode = 'require'
 )
 
+## Empty dataframe
+empty_df = data.frame("Item" = character(3),
+                      "UnitPrice"= double(3),
+                      "TotalPrice"= double(3),
+                      "date" = Sys.Date(),
+                      "store" = character(3),
+                      stringsAsFactors = FALSE)
 
 # CSS to use in the app
 appCSS <-
@@ -58,93 +67,27 @@ appCSS <-
    #header { background: #fff; border-bottom: 1px solid #ddd; margin: -20px -15px 0; padding: 15px 15px 10px; }
   "
 
-# which fields are mandatory
-fieldsMandatory <- c("store", "receipt")
-
-# add an asterisk to an input label
-labelMandatory <- function(label) {
-  tagList(label,
-          span("*", class = "mandatory_star"))
-}
-
-# save the results to a file
-saveData <- function(data) {
-  fileName <- sprintf("res.csv")
-  
-  write.csv(
-    x = data,
-    file = file.path(responsesDir, fileName),
-    row.names = FALSE,
-    quote = TRUE
-  )
-  
-  data <- as.data.frame(data)
-  
-  #dbWriteTable(con, "apptest", data, append = TRUE)
-}
-
-
-# load all responses into a data.frame
-loadData <- function() {
-  # files <- list.files(file.path(responsesDir), full.names = TRUE)
-  # data <- lapply(files, read.csv, stringsAsFactors = FALSE)
-  # data <- do.call(rbind, data)
-  data
-  
-}
-
-convert.dtype <- function(obj, types) {
-  for (i in 1:length(obj)) {
-    FUN <- switch(types[i],
-                  character = as.character,
-                  numeric = as.numeric,
-                  factor = as.factor)
-    obj[, i] <- FUN(obj[, i])
-  }
-  obj
-}
-
-
-
-card <- function(.img, item, store, valid_from, valid_to) {
-  HTML(
-    paste0(
-      '<div class="card">
-      <div class="container">
-      <h5><b>',
-      item,
-      '</b></h5>
-      </div>
-      <center><img src="',
-      .img,
-      '" style="width:100%"></center>
-      <div class="container">
-      <h4><b>', store, '</b></h4>
-      <p><i>', valid_from, ' - ', valid_to, '</i></p>
-      </div>
-      </div>'
-    )
-  )
-}
-
 
 
 ## Define UI
 sidebar <- dashboardSidebar(
+  width = 300,
   sidebarMenu(
     id = "tabs", 
     menuItem(
-      HTML("<b>Upload receipt</b>"),
+      HTML("<font size='4'>Upload receipt</font>"),
       tabName = "upload",
       icon = icon("receipt")
     ),
-    menuItem(HTML("<b>View purchase history</b>"),
-             tabName = 'history',
-             icon=icon("shopping-cart")
+    menuItem(
+      HTML("<font size='4'>View shopping history</font>"),
+      tabName = 'history',
+      icon=icon("shopping-cart")
     ),
-    menuItem(HTML("<b>Browse the weekly flyers</b>"),
-             tabName = 'flyers',
-             icon=icon("newspaper")
+    menuItem(
+      HTML("<font size='4'>Browse sales flyers</font>"),
+      tabName = 'flyers',
+      icon=icon("newspaper")
     )),
   textInput(
     "search_box",
@@ -153,13 +96,10 @@ sidebar <- dashboardSidebar(
     placeholder = "Enter item or store name"
   ),
   splitLayout(
-    actionButton("search_btn", "Search", class = "btn-primary"),
-    actionButton("reset_btn", "Clear", class = "btn-primary")),
+    actionButton("search_btn", HTML("<font size='4'>Search</font>"), class = "btn-primary"),
+    actionButton("reset_btn", HTML("<font size='4'>Clear</font>"), class = "btn-primary")),
   uiOutput('store_list')
 )         
-
-
-
 
 
 body <- dashboardBody(tabItems(
@@ -169,72 +109,101 @@ body <- dashboardBody(tabItems(
       shinyjs::useShinyjs(),
       extendShinyjs(text = jscode),
       shinyjs::inlineCSS(appCSS),
-      fluidRow(column(3,
+      tags$head(tags$style(
+        type="text/css",
+        "#success_img img {max-width: 100%; width: auto; height: auto}"
+      )),
+      fluidRow(column(4,   
                       br(),
         flipBox(id = 1, width = 12, 
-                front_btn_text = "How to prepare your receipt",
-                back_btn_text = NULL,
+                front_btn_text = "Or, manually enter purchases",
+                back_btn_text = "Upload a receipt",
                 main_img = "https://image.flaticon.com/icons/svg/138/138360.svg",
                 header_img = "https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2089&q=80",
-                front_title = "Receipt upload",
+                front_title = NULL,
                 back_title = NULL,
                 div(id = "form",
-                    dateInput("date", "Date of purchase:", value = Sys.time()),
+                    dateInput(
+                      width='100%',
+                      "date", 
+                      HTML("<font size='4'>1. Select date of purchase:</font>"), 
+                      value = Sys.time()
+                    ),
                     selectInput(
+                      width='100%',
                       "store",
-                      "Store",
+                      HTML("<font size='4'>2. Select store</font>"),
                       c("", "Bloor Street Market", "Bulk Barn", "Loblaws", "Galleria", "H-Mart", "Metro", 
                         "Shoppers Drug Mart", "Sobeys", "T&T Supermarket", "Whole Foods")
                     ),
                     fileInput(
+                      width='100%',
                       "receipt",
-                      "Upload receipt",
+                      HTML("<font size='4'>3. Upload image of receipt</font>"),
                       multiple = FALSE,
-                      accept = c("image/jpeg",
-                                 "image/png",
-                                 ".jpeg", ".png", ".jpg")
+                      accept = c("image/jpeg", "image/png", ".jpeg", ".png", ".jpg")
                     ),
-                    br(), 
-                    actionButton("submit", "Submit", class = "btn-success"),
-                    br(), 
+                    HTML("<font size='4'><b>4. Confirm that all information is correct</b><br>
+                         Edit the table as needed (double click on cell for more options).</font>"),
+                    br(), hr(), br(),
+                    actionButton("submit", "Upload receipt", class = "btn-warning"),
+                    br(), br(), 
                     shinyjs::hidden(span(id = "submit_msg", "Submitting..."),
                                     div(id = "error",
                                         div(
                                           br(), tags$b("Error: "), span(id = "error_msg")
                                         ))),
-                    
-                    
-                    
-                    style='padding: 20px 30px 20px 30px;'),
+
+                    style='padding: 20px 50px 20px 50px;'
+                    ),
         
         shinyjs::hidden(div(
           id = "thankyou_msg",
-          h3("Your receipt was uploaded successfully!"),
           br(),
-          actionLink("submit_another", "Submit another response")
+          actionLink("submit_another", 
+                     HTML("<h1><i class='fas fa-clipboard-check'></i><br></h1><h3>Submit another?</h3>")),
+          br()
         )),
          
-        back_content = HTML('<div style="align=left;">
-        <h4>Please crop the image to <i>only</i> contain the purchased items:</h4>
-        <br>
-        <center><img src="https://i.imgur.com/oN67aUk.jpg" width=75%></center>
-        </div>'))),
+        back_content = div(shinyjs::hidden(div(
+                              id = "thankyou_msg_back",
+                              actionLink("submit_another_back", 
+                                         HTML("<h1><i class='fas fa-clipboard-check'></i><br></h1><h3>Submit another?</h3>")),
+                              br())),
+                           div(id = 'back_content',
+                               HTML('<p style="float:left";><i>Right click the table to insert or delete rows.</i></p>'),
+                               br(), br(),
+                               rHandsontableOutput("manual_entry"), 
+                               br(),
+                               actionButton("manual_submit", "Enter purchases", class = "btn-warning")
+                             )
+                           ))),
         
-        column(9, br(),
-               box(withSpinner(DTOutput("contents"), type = 1), hr(), splitLayout(uiOutput('delete_btn'), uiOutput('add_btn')),
-                 title = "Purchases",
-                 width = 12,
-                 solidHeader = TRUE,
-                 status = 'danger',
-                 collapsible = FALSE
-               )))
+        column(8, br(), 
+               box(
+                   br(), br(),
+                   slickROutput("slick_output", width='100%', height='550px'),
+                   rHandsontableOutput("contents") %>% withSpinner(type = 1),
+                   br(),
+                   htmlOutput("success_img"),
+                   title = NULL,
+                   width = 12,
+                   height = 700,
+                   solidHeader = TRUE,
+                   status = 'danger',
+                   collapsible = FALSE)
+               ))
     )
   ),
   tabItem(tabName = "history",
           fluidPage(
-            fluidRow(valueBoxOutput("totalBox")),
-            fluidRow(tabBox(tabPanel("Summary", "Test"),
-                            tabPanel("View detailed history", DTOutput("purchase_history")),
+            br(),
+            fluidRow(valueBoxOutput("totalBox"), 
+                     valueBoxOutput("totalBox2"), 
+                     valueBoxOutput("totalBox3")),
+            fluidRow(tabBox(tabPanel("By date", "heat map by date"),
+                            tabPanel("By store", "knob and "),
+                            tabPanel("Detailed history", DTOutput("purchase_history")),
                             width=12)))),
   tabItem(
     tabName = "flyers",
@@ -388,71 +357,67 @@ server <- function(input, output, session) {
     data
   })
   
-  
-  
- 
-  output$contents <- DT::renderDataTable({
-    datatable(
-      if (is.null(input$receipt$datapath)) {
-      df <- data.frame()
-    } else {
-      df <- as.data.frame(get_res(imgur_upload(re1())[1]))
-      df
-    }, editable = T)
+
+  receipt_data <-  reactive({
+    as.data.frame(get_res(imgur_upload(re1())[1]))
   })
-  
+    
+
   observe({
-    if (!is.null(input$contents_rows_selected)) {
-      output$delete_btn <- renderUI(actionButton("deleteRows", "Delete"))
-      output$add_btn <- renderUI(actionButton("addRows", "Insert"))
+    if (is.null(input$receipt$datapath)) {
+      output$contents <- renderRHandsontable({
+        data.frame(matrix(ncol=0, nrow=0))
+      })
+      
+      img_list <- c("https://i.ibb.co/SrQYjm9/step-1.png", 
+                    "https://i.ibb.co/XSBsRp7/step-2.png",
+                    "https://i.ibb.co/gVGdcpS/step-3.png",
+                    "https://i.ibb.co/L1HB2Xc/step-4.png")
+      
+      output$slick_output <- renderSlickR({
+        x <- slickR(img_list,
+                    slideId = 'myslick',
+                    height = 250,
+                    width = '90%',
+                    slickOpts = list(dots = TRUE, autoplay = TRUE))
+      })
+      
+      # Observe the active slick
+      # We will store this information in a new reactive environment
+      active_slick <- shiny::reactiveValues()
+      
+      shiny::observeEvent(input$slick_output_current,{
+        
+        clicked_slide    <- input$slick_output_current$.clicked
+        relative_clicked <- input$slick_output_current$.relative_clicked
+        center_slide     <- input$slick_output_current$.center
+        total_slide      <- input$slick_output_current$.total
+        active_slide     <- input$slick_output_current$.slide
+        
+        if(!is.null(clicked_slide)){
+          active_slick$clicked_slide    <- clicked_slide
+          active_slick$center_slide     <- center_slide
+          active_slick$relative_clicked <- relative_clicked
+          active_slick$total_slide      <- total_slide
+          active_slick$active_slide     <- active_slide
+        }
+      })
     } else {
-      shinyjs::hide('deleteRows')
-      shinyjs::hide('addRows')
+      shinyjs::hide('success_img')
+      shinyjs::hide('slick_output')
+      shinyjs::show('contents')
+      
+      output$contents <- renderRHandsontable({
+        rhandsontable(receipt_data(), stretchH = "all", 
+                      colHeaders = c('Item', 'Unit Price', 'Total Price', 'Purchase date', 'Store')) %>%
+          hot_context_menu(allowRowEdit = TRUE, allowColEdit = TRUE)  %>%
+          hot_cols(columnSorting = TRUE,  allowInvalid = TRUE, strict=FALSE)
+      })
+
     }
   })
   
-  values <- reactiveValues(dfWorking = df)
-  
-  observeEvent(input$deleteRows, { 
-    df <- df[-as.numeric(input$contents_rows_selected),]
-    
-    output$contents <- DT::renderDataTable({
-      df
-    })
-  })
-  
-  
-  proxy = dataTableProxy('contents')
-  
-  observeEvent(input$contents_cell_edit, {
-    df <- read.csv('res.csv')
-    df <-
-      convert.dtype(df,
-                    c(
-                      "character",
-                      "character",
-                      "character",
-                      "character",
-                      "character"
-                    ))
-    info = input$contents_cell_edit
-    
-    str(info)
-    i = info$row
-    j = info$col
-    v = info$value
-    
-    df[i, j] = DT::coerceValue(v, df[i, j])
-    
-    replaceData(proxy, df, resetPaging = FALSE) # important
-    
-    saveData(df)
-    
-  })
-  
-  
-  
-  
+
   
   # When the Submit button is clicked, submit the response
   observeEvent(input$submit, {
@@ -460,10 +425,13 @@ server <- function(input, output, session) {
     shinyjs::disable("submit")
     shinyjs::show("submit_msg")
     shinyjs::hide("error")
+    shinyjs::hide("contents")
+    shinyjs::hide("slick_output")
     
     # Save the data (show an error message in case of error)
     tryCatch({
-      df <- read.csv('res.csv')
+      #df <- read.csv('res.csv')
+      df <- hot_to_r(input$contents)
       #saveData(formData())
       dbWriteTable(con, "apptest", df, append = TRUE)
       shinyjs::reset("form")
@@ -472,6 +440,7 @@ server <- function(input, output, session) {
         ' '
       })
       shinyjs::show("thankyou_msg")
+      shinyjs::hide('btn-1')
     },
     error = function(err) {
       shinyjs::html("error_msg", err$message)
@@ -483,54 +452,148 @@ server <- function(input, output, session) {
       shinyjs::enable("submit")
       shinyjs::hide("submit_msg")
     })
+    
+    ## Show success image
+    src = "https://i.ibb.co/9rgXLVH/pluto-welcome.png"
+    output$success_img <- renderText({c('<center><h2>Purchases added!</h2><br><img src="',src,'"></center>')})
+    
+    shinyjs::show('success_img')
   })
   
   
   
-  ## submit another response
-  output$contents <- DT::renderDataTable({
-    datatable(if (is.null(input$receipt$datapath)) {
-      df <- data.frame()
-      df
-    } else {
-      df <- as.data.frame(formData())
-      df
-    }, editable = T)
-  })
-  
-  
+  ## submit another receipt
   observeEvent(input$submit_another, {
     js$refresh()
   })
   
+  
+  ## Switch to manual entry
+  # observeEvent(input$manual_sub_another, {
+  #   shinyjs::hide('thankyou_msg')
+  #   shinyjs::hide('success_img')
+  #   shinyjs::show('slick_output')
+  #   shinyjs::show('manual_entry')
+  #   shinyjs::show('manual_submit')
+  # })
+  
+  
+  ## Manual entry
+  tb_data <- reactiveValues(values=empty_df)
+  
+  output$manual_entry <- renderRHandsontable({
+    rhandsontable(tb_data$values, stretchH = "all", rowHeaderWidth = 20,
+                  colHeaders = c('Item', 'Unit price', 'Total price', 'Purchased', 'Store')) 
+  })
+  
+  observeEvent(input$manual_entry, {
+    tb_data$values <- hot_to_r(input$manual_entry)
+  })
+  
+  
+  # When the manual submit button is clicked, submit the response
+  observeEvent(input$manual_submit, {
+    # User-experience stuff
+    shinyjs::disable("manual_submit")
+    shinyjs::show("submit_msg")
+    shinyjs::hide("error")
+    shinyjs::hide("contents")
+    shinyjs::hide("slick_output")
+    
+    # Save the data (show an error message in case of error)
+    tryCatch({
+      #df <- read.csv('res.csv')
+      df <- hot_to_r(input$manual_entry)
+      #saveData(formData())
+      dbWriteTable(con, "apptest", df, append = TRUE)
+      shinyjs::reset("manual_entry")
+      shinyjs::hide("manual_entry")
+      shinyjs::hide('manual_submit')
+      output$contents <- renderText({
+        ' '
+      })
+      shinyjs::hide('back_content')
+      shinyjs::show("thankyou_msg_back")
+    },
+    error = function(err) {
+      shinyjs::html("error_msg", err$message)
+      shinyjs::show(id = "error",
+                    anim = TRUE,
+                    animType = "fade")
+    },
+    finally = {
+      shinyjs::enable("manual_submit")
+      shinyjs::hide("submit_msg")
+    })
+    
+    ## Show success image
+    src = "https://i.ibb.co/9rgXLVH/pluto-welcome.png"
+    output$success_img <- renderText({c('<center><h2>Purchases added!</h2><br><img src="',src,'"></center>')})
+  
+    shinyjs::show('success_img')
+  })
+  
+  ## Change to receipt upload after manual entry
+  observeEvent(input$submit_another_back, {
+    js$refresh()
+  })
+  
+
+  
+  ## Purchase history
   pur_hist <- dbGetQuery(con, "SELECT * FROM apptest ORDER BY date DESC")
+  
+  colnames(pur_hist) <- c("Item", "Unit price", "Total price", "Purchase date", "Store")
   
   output$purchase_history <- DT::renderDataTable(pur_hist)
   
   output$totalBox <- renderValueBox({
     valueBox(
       sum(pur_hist$TotalPrice),
-      "Spent",
-      icon = icon("thumbs-up", lib = "glyphicon"),
-      color = "yellow"
+      "Spent this month",
+      icon = icon("usd", lib = "glyphicon"),
+      color = "red"
     )
   })
   
+  output$totalBox2 <- renderValueBox({
+    valueBox(
+      "Products",
+      "Relative to last month",
+      icon = icon("time", lib = "glyphicon"),
+      color = "green"
+    )
+  })
+  
+  output$totalBox3 <- renderValueBox({
+    valueBox(
+      "Items",
+      "Median purchase size",
+      icon = icon("shopping-cart", lib = "glyphicon"),
+      color = "orange"
+    )
+  })
   
   
   
   ## No search term
   observe({
     if (input$tabs == "flyers" & input$search_box == "") {
-      output$cards <-  renderUI({HTML("<br><br><br><center><h1>Select one of the stores above for one-click access to the weekly flyer. <br><br>
-                                      Or, search for a particular item or store of your choice.</h1></center>")})
+      output$cards <-
+        renderUI({
+          HTML(
+            "<br><br><br><center><h1>Select one of the stores above for one-click access to the weekly flyer. <br><br>
+                                      Or, search for a particular item or store of your choice.</h1></center>"
+          )
+        })
     }
   })
   
   
   
-  ## Any search term, respond to 
+  ## Any search term
   observeEvent(c(req(input$search_box != "", input$search_btn)), {
+    shinyjs::hide('cards')
     shinyjs::hide('metro_btn')
     shinyjs::hide("wholefoods_btn")
     shinyjs::hide("loblaws_btn")
@@ -539,48 +602,49 @@ server <- function(input, output, session) {
     shinyjs::hide("fortinos_btn")
     shinyjs::show("cards")
     
-    
     search_term <- gsub(" ", "+", input$search_box)
     
     res_json <- get_flyer(search_term)
     
-    output$store_list <- renderUI(prettyRadioButtons("select_store", h4("See items at:"), 
-                                                     choices = unique_stores(input$search_box), 
-                                                     selected = NULL, inline = FALSE, width = NULL)) 
+    output$store_list <-
+      renderUI(
+        prettyRadioButtons(
+          "select_store",
+          h4("See items at:"),
+          choices = unique_stores(input$search_box),
+          selected = NULL,
+          inline = FALSE,
+          width = NULL
+        )
+      )
     
-    shinyjs::show('store_list')
     
-    
-    
-    ncount <- reactive({input$select_store})
-
-    output$ncount_2 <- renderPrint({
-      ncount()
-    })
-    
-    shinyjs::show('ncount_2')
-    
-
-
     
     if (length(res_json$items) == 0) {
-        output$cards <- renderText(HTML("<br><br><center><h2>Sorry, your query did not return any results.</h2></center>"))
+      output$cards <-
+        renderText(
+          HTML("<br><br><center><h2>Sorry, your query did not return any results.</h2></center>")
+        )
+      
+      shinyjs::hide('store_list')
     } else {
       observeEvent(input$select_store, {
-        output$cards <- create_grid_item(session, search_term, input$select_store)
+        output$cards <-
+          create_grid_item(session, search_term, input$select_store)
       })
-        
+      
+      shinyjs::show('store_list')
     }
-   }) 
+    
+    #shinyjs::show('store_list')
+  }) 
    
  
   
   ## Reset search box
   observeEvent(input$reset_btn, {
     shinyjs::reset("search_box")
-    
-    #output$cards <- renderText("Check out these stores.")
-    
+ 
     shinyjs::show('metro_btn')
     shinyjs::show("wholefoods_btn")
     shinyjs::show("loblaws_btn")
@@ -619,20 +683,7 @@ server <- function(input, output, session) {
   observeEvent(input$loblaws_btn, {
     output$cards <- create_grid_store(session, "loblaws")
   })
-  
-  
-  
-  
-
-   
-
 }
-
-
-
-
-
-
 
 
 

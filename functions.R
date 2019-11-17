@@ -12,6 +12,57 @@ library(dplyr)
 library(shiny)
 
 
+# which fields are mandatory
+fieldsMandatory <- c("store", "receipt")
+
+# add an asterisk to an input label
+labelMandatory <- function(label) {
+  tagList(label,
+          span("*", class = "mandatory_star"))
+}
+
+# directory where responses get stored
+responsesDir <- file.path(".")
+
+
+# save the results to a file
+saveData <- function(data) {
+  fileName <- sprintf("res.csv")
+  
+  write.csv(
+    x = data,
+    file = file.path(responsesDir, fileName),
+    row.names = FALSE,
+    quote = TRUE
+  )
+  
+  data <- as.data.frame(data)
+  
+  #dbWriteTable(con, "apptest", data, append = TRUE)
+}
+
+
+# load all responses into a data.frame
+loadData <- function() {
+  # files <- list.files(file.path(responsesDir), full.names = TRUE)
+  # data <- lapply(files, read.csv, stringsAsFactors = FALSE)
+  # data <- do.call(rbind, data)
+  data
+  
+}
+
+convert.dtype <- function(obj, types) {
+  for (i in 1:length(obj)) {
+    FUN <- switch(types[i],
+                  character = as.character,
+                  numeric = as.numeric,
+                  factor = as.factor)
+    obj[, i] <- FUN(obj[, i])
+  }
+  obj
+}
+
+
 
 get_flyer <- function(search_term) {
   res <- GET(sprintf("https://backflipp.wishabi.com/flipp/items/search?locale=en-ca&postal_code=M4Y2W4&q=%s&limit=1000", search_term))
