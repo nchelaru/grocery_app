@@ -114,8 +114,7 @@ body <- dashboardBody(tabItems(
         "#success_img img {max-width: 100%; width: auto; height: auto}"
       )),
       fluidRow(column(4,   
-                      br(),
-        flipBox(id = 1, width = 12, 
+        flipBox(id = 1, width = 12,
                 front_btn_text = "Or, manually enter purchases",
                 back_btn_text = "Upload a receipt",
                 main_img = "https://image.flaticon.com/icons/svg/138/138360.svg",
@@ -144,10 +143,11 @@ body <- dashboardBody(tabItems(
                       accept = c("image/jpeg", "image/png", ".jpeg", ".png", ".jpg")
                     ),
                     HTML("<font size='4'><b>4. Confirm that all information is correct</b><br>
-                         Edit the table as needed (double click on cell for more options).</font>"),
-                    br(), hr(), br(),
+                         Edit the table as needed<br>(right click on table for more editing options)</font>"),
+                    br(),
+                    HTML("<br><br><font size='4'><b>5. Save to database!</b></font><br><br>"),
                     actionButton("submit", "Upload receipt", class = "btn-warning"),
-                    br(), br(), 
+                    hr(), 
                     shinyjs::hidden(span(id = "submit_msg", "Submitting..."),
                                     div(id = "error",
                                         div(
@@ -171,7 +171,7 @@ body <- dashboardBody(tabItems(
                                          HTML("<h1><i class='fas fa-clipboard-check'></i><br></h1><h3>Submit another?</h3>")),
                               br())),
                            div(id = 'back_content',
-                               HTML('<p style="float:left";><i>Right click the table to insert or delete rows.</i></p>'),
+                               HTML('<p style="float:left";><i>Right click the table for more editing options.</i></p>'),
                                br(), br(),
                                rHandsontableOutput("manual_entry"), 
                                br(),
@@ -179,7 +179,7 @@ body <- dashboardBody(tabItems(
                              )
                            ))),
         
-        column(8, br(), 
+        column(8, 
                box(
                    br(), br(),
                    slickROutput("slick_output", width='100%', height='550px'),
@@ -197,7 +197,6 @@ body <- dashboardBody(tabItems(
   ),
   tabItem(tabName = "history",
           fluidPage(
-            br(),
             fluidRow(valueBoxOutput("totalBox"), 
                      valueBoxOutput("totalBox2"), 
                      valueBoxOutput("totalBox3")),
