@@ -25,6 +25,7 @@ library(rhandsontable)
 library(slickR)
 library(svglite)
 library(tippy)
+library(openair)
 
 source("functions.R")
 
@@ -49,13 +50,7 @@ con <- dbConnect(
   sslmode = 'require'
 )
 
-## Empty dataframe
-empty_df = data.frame("Item" = character(3),
-                      "UnitPrice"= double(3),
-                      "TotalPrice"= double(3),
-                      "date" = Sys.Date(),
-                      "store" = character(3),
-                      stringsAsFactors = FALSE)
+
 
 # CSS to use in the app
 appCSS <-
@@ -71,11 +66,11 @@ appCSS <-
 
 ## Define UI
 sidebar <- dashboardSidebar(
-  width = 300,
+  width = 250,
   sidebarMenu(
     id = "tabs", 
     menuItem(
-      HTML("<font size='4'>Upload receipt</font>"),
+      HTML("<font size='4'>Enter purchases</font>"),
       tabName = "upload",
       icon = icon("receipt")
     ),
@@ -111,12 +106,13 @@ body <- dashboardBody(tabItems(
       shinyjs::inlineCSS(appCSS),
       tags$head(tags$style(
         type="text/css",
-        "#success_img img {max-width: 100%; width: auto; height: auto}"
+        "#success_img img {max-width: 100%; width: auto; height: auto}
+        #slick_slide img {max-width: 100%; width: auto; height: auto}"
       )),
-      fluidRow(column(4,   
+      fluidRow(column(5,   
         flipBox(id = 1, width = 12,
-                front_btn_text = "Or, manually enter purchases",
-                back_btn_text = "Upload a receipt",
+                front_btn_text = HTML("<font size='4'>Manually enter purchases instead</font>"),
+                back_btn_text = HTML("<font size='4'>Upload a receipt instead</font>"),
                 main_img = "https://image.flaticon.com/icons/svg/138/138360.svg",
                 header_img = "https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2089&q=80",
                 front_title = NULL,
@@ -146,8 +142,8 @@ body <- dashboardBody(tabItems(
                          Edit the table as needed<br>(right click on table for more editing options)</font>"),
                     br(),
                     HTML("<br><br><font size='4'><b>5. Save to database!</b></font><br><br>"),
-                    actionButton("submit", "Upload receipt", class = "btn-warning"),
-                    hr(), 
+                    actionButton("submit", HTML("<font size='4'>Upload receipt</font>"), class = "btn-warning"),
+                    br(), br(), hr(), br(), br(),
                     shinyjs::hidden(span(id = "submit_msg", "Submitting..."),
                                     div(id = "error",
                                         div(
@@ -159,31 +155,57 @@ body <- dashboardBody(tabItems(
         
         shinyjs::hidden(div(
           id = "thankyou_msg",
-          br(),
+          br(), br(), br(),
           actionLink("submit_another", 
-                     HTML("<h1><i class='fas fa-clipboard-check'></i><br></h1><h3>Submit another?</h3>")),
-          br()
+                     HTML("<h1><i class='fas fa-clipboard-check'></i><br></h1><h3>Submit another</h3>")),
+          br(), hr(), br(), br(),
+          actionLink("switch_history", 
+                     HTML("<h1><i class='fas fa-eye'></i><br></h1><h3>View submitted purchases</h3>")),
+          br(), hr(), br(), br()
         )),
          
         back_content = div(shinyjs::hidden(div(
                               id = "thankyou_msg_back",
+                              br(), br(),
                               actionLink("submit_another_back", 
-                                         HTML("<h1><i class='fas fa-clipboard-check'></i><br></h1><h3>Submit another?</h3>")),
-                              br())),
+                                         HTML("<h1><i class='fas fa-clipboard-check'></i><br></h1><h3>Submit another</h3>")),
+                              br(), hr(), br(), br(),
+                              actionLink("switch_history_back", 
+                                         HTML("<h1><i class='fas fa-eye'></i><br></h1><h3>View submitted purchases</h3>")),
+                              br(), hr(), br(), br())),
                            div(id = 'back_content',
-                               HTML('<p style="float:left";><i>Right click the table for more editing options.</i></p>'),
-                               br(), br(),
-                               rHandsontableOutput("manual_entry"), 
+                               actionButton("num_rows", HTML("<font size='4'>Select the number of items purchased</font>"), class = "btn-warning"),
                                br(),
-                               actionButton("manual_submit", "Enter purchases", class = "btn-warning")
+                               shinyjs::hidden(div(id = "knob", align='center',
+                                                   knobInput(inputId="manual_knob", label="", value = 1, 
+                                                   min = 1, max = 15, step = 1,
+                                                   angleOffset = 0, angleArc = 360, cursor = FALSE,
+                                                   thickness = NULL, lineCap = "round",
+                                                   displayInput = TRUE, displayPrevious = TRUE,
+                                                   rotation = "clockwise", fgColor =NULL,
+                                                   inputColor = "#428BCA", bgColor = NULL, readOnly = FALSE, 
+                                                   width = NULL, height = NULL, immediate = TRUE))),
+                               shinyjs::hidden(div(id = "manual_table", style='margin:20px; font-size:17px;',
+                                                     HTML('<p style="float:left";><i>If needed, right click the table to insert more blank rows.</i></p>'),
+                                                     br(), br(), 
+                                                     rHandsontableOutput("manual_entry"), 
+                                                     br(), 
+                                                     splitLayout(
+                                                       actionButton("manual_submit", HTML("<font size='4'>Save to database!</font>"), class = "btn-success"), 
+                                                       actionButton("manual_clear", HTML("<font size='4'>Cancel</font>"), class = "btn-danger")),
+                                                     br()
+                                                   )),
+                               
                              )
                            ))),
         
-        column(8, 
+        column(7, 
                box(
-                   br(), br(),
-                   slickROutput("slick_output", width='100%', height='550px'),
-                   rHandsontableOutput("contents") %>% withSpinner(type = 1),
+                   br(),
+                   div(slickROutput("slick_output", width='100%', height='550px'),
+                       style='margin:30px'),
+                   div(rHandsontableOutput("contents") %>% withSpinner(type = 1), 
+                       style='margin:30px;font-size:17px;'),
                    br(),
                    htmlOutput("success_img"),
                    title = NULL,
@@ -200,10 +222,19 @@ body <- dashboardBody(tabItems(
             fluidRow(valueBoxOutput("totalBox"), 
                      valueBoxOutput("totalBox2"), 
                      valueBoxOutput("totalBox3")),
-            fluidRow(tabBox(tabPanel("By date", "heat map by date"),
-                            tabPanel("By store", "knob and "),
-                            tabPanel("Detailed history", DTOutput("purchase_history")),
-                            width=12)))),
+            fluidRow(tabBox(tabPanel("Detailed history", 
+                                     withSpinner(DTOutput("purchase_history"), type=2), 
+                                     style='margin:30px;'),
+                            tabPanel("Summary by date", 
+                                      br(), 
+                                     withSpinner(plotlyOutput('dat_heatmap', height='150%'), type=2),
+                                     style='margin:30px;'),
+                            tabPanel("Summary by store", 
+                                     br(),
+                                     withSpinner(sankeyNetworkOutput('sankey_plot', height='700px', width='110%'), type=2),
+                                     style='margin:30px;'),
+                            width=12, height=800),
+                     ))),
   tabItem(
     tabName = "flyers",
     fluidPage(
@@ -301,6 +332,8 @@ server <- function(input, output, session) {
     input$search_box
   })
   
+
+  
   ## Parse OCR results
   get_res <- function (link, input) {
     res <-
@@ -361,7 +394,7 @@ server <- function(input, output, session) {
     as.data.frame(get_res(imgur_upload(re1())[1]))
   })
     
-
+  
   observe({
     if (is.null(input$receipt$datapath)) {
       output$contents <- renderRHandsontable({
@@ -408,7 +441,7 @@ server <- function(input, output, session) {
       
       output$contents <- renderRHandsontable({
         rhandsontable(receipt_data(), stretchH = "all", 
-                      colHeaders = c('Item', 'Unit Price', 'Total Price', 'Purchase date', 'Store')) %>%
+                      colHeaders = c('Item', 'Unit price ($/ea or /kg)', 'Total ($)', 'Purchase date', 'Store')) %>%
           hot_context_menu(allowRowEdit = TRUE, allowColEdit = TRUE)  %>%
           hot_cols(columnSorting = TRUE,  allowInvalid = TRUE, strict=FALSE)
       })
@@ -431,8 +464,9 @@ server <- function(input, output, session) {
     tryCatch({
       #df <- read.csv('res.csv')
       df <- hot_to_r(input$contents)
-      #saveData(formData())
-      dbWriteTable(con, "apptest", df, append = TRUE)
+      colnames(df) <- c("item", "unitprice", "totalprice", "date", "store")
+      df <-  df[!(is.na(df$item) | df$item==""), ]
+      dbWriteTable(con, "grocery", df, append = TRUE)
       shinyjs::reset("form")
       shinyjs::hide("form")
       output$contents <- renderText({
@@ -466,27 +500,53 @@ server <- function(input, output, session) {
     js$refresh()
   })
   
-  
-  ## Switch to manual entry
-  # observeEvent(input$manual_sub_another, {
-  #   shinyjs::hide('thankyou_msg')
-  #   shinyjs::hide('success_img')
-  #   shinyjs::show('slick_output')
-  #   shinyjs::show('manual_entry')
-  #   shinyjs::show('manual_submit')
-  # })
-  
+  ## View history
+  observeEvent(input$switch_history, {
+    updateTabsetPanel(session, "tabs",
+                      selected = "history")
+  })
+
   
   ## Manual entry
-  tb_data <- reactiveValues(values=empty_df)
-  
-  output$manual_entry <- renderRHandsontable({
-    rhandsontable(tb_data$values, stretchH = "all", rowHeaderWidth = 20,
-                  colHeaders = c('Item', 'Unit price', 'Total price', 'Purchased', 'Store')) 
+  observeEvent(input$num_rows, {
+    shinyjs::hide('btn-10001')
+    shinyjs::show('knob')
+    shinyjs::show('manual_table')
   })
   
+  
+  ## Get input from knob
+  gen_empty_df <- function(r_num) {
+    empty_df = data.frame("store" = character(r_num), 
+                          "Item" = character(r_num),
+                          "UnitPrice"= double(r_num),
+                          "TotalPrice"= double(r_num),
+                          "date" = Sys.Date(),
+                          stringsAsFactors = FALSE)
+    return(empty_df)
+  }
+  
+  
+  tb_data <- eventReactive(input$manual_knob, {
+    df <- gen_empty_df(input$manual_knob)
+    return(df)
+  })
+  
+  
+  output$manual_entry <- renderRHandsontable({
+    stores_list <- c("Coppa's Fresh Market", 'Food Basics', 'Loblaws', 'Metro', 'Sobeys', "Fortinos", 
+                "FreshCo", 'Walmart', 'T&T Supermarket', "Galleria Supermarket", "H-Mart ", "No Frills", 
+                "Shoppers Drug Mart", 'BTrust', 'LCBO', 'Independent City Market', "Whole Foods", 'Canadian Tire')
+    
+    rhandsontable(tb_data(), stretchH = "all", rowHeaderWidth = 35,
+                  colHeaders = c('Store', 'Item', 'Unit price ($/ea or /kg)', 'Total ($)', 'Date')) %>%
+      hot_col(col = "Store", type = "dropdown", source = stores_list, colWidths = 150)
+  })
+
+  
+  
   observeEvent(input$manual_entry, {
-    tb_data$values <- hot_to_r(input$manual_entry)
+    tb_data <- hot_to_r(input$manual_entry)
   })
   
   
@@ -498,21 +558,26 @@ server <- function(input, output, session) {
     shinyjs::hide("error")
     shinyjs::hide("contents")
     shinyjs::hide("slick_output")
+    shinyjs::hide('back_content')
+    shinyjs::show("thankyou_msg_back")
     
     # Save the data (show an error message in case of error)
     tryCatch({
       #df <- read.csv('res.csv')
       df <- hot_to_r(input$manual_entry)
-      #saveData(formData())
-      dbWriteTable(con, "apptest", df, append = TRUE)
+      colnames(df) <- c("item", "unitprice", "totalprice", "date", "store")
+      dbWriteTable(con, "grocery", df, append = TRUE)
       shinyjs::reset("manual_entry")
       shinyjs::hide("manual_entry")
       shinyjs::hide('manual_submit')
       output$contents <- renderText({
         ' '
       })
-      shinyjs::hide('back_content')
-      shinyjs::show("thankyou_msg_back")
+      
+      
+      #shinyjs::hide('knob')
+      #shinyjs::hide('manual_table')
+      
     },
     error = function(err) {
       shinyjs::html("error_msg", err$message)
@@ -532,48 +597,99 @@ server <- function(input, output, session) {
     shinyjs::show('success_img')
   })
   
+  
+  
+  ## Cancel button
+  observeEvent(input$manual_clear, {
+    js$refresh()
+  })
+  
+  
+  
   ## Change to receipt upload after manual entry
   observeEvent(input$submit_another_back, {
     js$refresh()
   })
   
 
+  ## To switch to purchase history tab
+  observeEvent(input$switch_history_back, {
+    updateTabsetPanel(session, "tabs",
+                      selected = "history")
+  })
+  
   
   ## Purchase history
-  pur_hist <- dbGetQuery(con, "SELECT * FROM apptest ORDER BY date DESC")
-  
-  colnames(pur_hist) <- c("Item", "Unit price", "Total price", "Purchase date", "Store")
-  
-  output$purchase_history <- DT::renderDataTable(pur_hist)
-  
-  output$totalBox <- renderValueBox({
-    valueBox(
-      sum(pur_hist$TotalPrice),
-      "Spent this month",
-      icon = icon("usd", lib = "glyphicon"),
-      color = "red"
-    )
+  observe({
+    if (req(input$tabs) == "history") {
+      pur_hist <- dbGetQuery(con, "SELECT * FROM grocery ORDER BY Date DESC")
+      
+      colnames(pur_hist) <- c("item", "unitprice", "totalprice", "date", "store")
+      
+      pur_hist <-  pur_hist[!(is.na(pur_hist$item) | pur_hist$item==""), ]
+      
+      output$purchase_history <- DT::renderDataTable(datatable(pur_hist, 
+                                                               colnames=c("Item", "Unit price ($/ea or /kg)", "Total price ($)", 
+                                                                          "Purchase date", "Store")))
+      
+      
+      
+      output$totalBox <- renderValueBox({
+        pur_hist <- pur_hist %>%
+          separate('date', sep="-", into = c("year", "month", "day"))
+        
+        curr_month <- format(Sys.Date(), "%m")
+        
+        pur_hist_curr_month <- pur_hist[pur_hist$month == curr_month, ]
+        
+        valueBox(
+          sum(pur_hist_curr_month['totalprice']),
+          "Spent this month",
+          icon = icon("usd", lib = "glyphicon"),
+          color = "red"
+        )
+      })
+      
+      output$totalBox2 <- renderValueBox({
+        pur_hist <- pur_hist %>%
+          separate('date', sep="-", into = c("year", "month", "day"))
+        
+        curr_month <- format(Sys.Date(), "%m")
+        
+        last_month = as.numeric(curr_month) - 1
+        
+        pur_hist_last_month <- pur_hist[pur_hist$month == last_month, ]
+        
+        valueBox(
+          sum(pur_hist_last_month['totalprice']),
+          "Spent last month",
+          icon = icon("time", lib = "glyphicon"),
+          color = "green"
+        )
+      })
+      
+      output$totalBox3 <- renderValueBox({
+        valueBox(
+          "Items",
+          "Median purchase size",
+          icon = icon("shopping-cart", lib = "glyphicon"),
+          color = "orange"
+        )
+      })
+      
+      output$dat_heatmap <- renderPlotly({
+        date_heatmap()
+      })
+      
+      output$sankey_plot <- renderSankeyNetwork({
+        sankey_diag()
+      })
+    }
   })
   
-  output$totalBox2 <- renderValueBox({
-    valueBox(
-      "Products",
-      "Relative to last month",
-      icon = icon("time", lib = "glyphicon"),
-      color = "green"
-    )
-  })
-  
-  output$totalBox3 <- renderValueBox({
-    valueBox(
-      "Items",
-      "Median purchase size",
-      icon = icon("shopping-cart", lib = "glyphicon"),
-      color = "orange"
-    )
-  })
   
   
+ 
   
   ## No search term
   observe({
@@ -682,6 +798,9 @@ server <- function(input, output, session) {
   observeEvent(input$loblaws_btn, {
     output$cards <- create_grid_store(session, "loblaws")
   })
+  
+  
+  
 }
 
 

@@ -10,6 +10,14 @@ library(V8)
 library(plyr)
 library(dplyr)
 library(shiny)
+library(quantmod)
+library(ggplot2)
+library(zoo)
+library(plotly)
+library(RPostgres)
+library(DBI)
+library(networkD3)
+
 
 
 # which fields are mandatory
@@ -334,3 +342,149 @@ hmart_parse <- function(v, k, i, receipt_date, script_type) {
   return(z)
 }
 
+
+
+date_heatmap <- function() {
+  con <- dbConnect(
+    Postgres(),
+    dbname = "d2sjdih8tegcuc",
+    host = "ec2-184-72-238-22.compute-1.amazonaws.com",
+    port = '5432',
+    user = "xkktypszvisogc",
+    password = "35b7eb67cab6ea1750e5877d61c3415851d6f1ca9c5782ec0b6bf91ede8acbea",
+    sslmode = 'require'
+  )
+  
+  ## Aggregate by date
+  pur_hist <- dbGetQuery(con, "SELECT * FROM grocery")
+  
+  colnames(pur_hist) <- c("item", "unitprice", "totalprice", "date", "store")
+  
+  pur_hist <-  pur_hist[!(is.na(pur_hist$item) | pur_hist$item==""), ]
+  
+  dat <- pur_hist %>% 
+    group_by(date) %>%
+    summarise(date_total=sum(totalprice))
+  
+  dat <- dat %>% 
+    complete(date = seq.Date(as.Date("2019-08-01"), max(date), by="day"))
+  
+  dat$date_total[is.na(dat$date_total)] <- 0
+  
+  # We will facet by year ~ month, and each subgraph will
+  # show week-of-month versus weekday
+  # the year is simple
+  dat$year <- as.numeric(as.POSIXlt(dat$date)$year+1900)
+  
+  # the month too 
+  dat$month <- as.numeric(as.POSIXlt(dat$date)$mon+1)
+  
+  # but turn months into ordered facors to control the appearance/ordering in the presentation
+  dat$monthf<-factor(dat$month,
+                     levels=as.character(1:12),
+                     labels=c("January","February","March","April","May", 
+                              "June","July","August","September","October","November","December"),
+                     ordered=TRUE)
+  
+  # the day of week is again easily found
+  dat$weekday = as.POSIXlt(dat$date)$wday
+  
+  # I use the reverse function rev here to order the week top down in the graph
+  dat$weekdayf<-factor(dat$weekday,
+                       levels=rev(c(1, 2, 3, 4, 5, 6, 0)), 
+                       labels=rev(c("Mon","Tue","Wed","Thu","Fri","Sat", "Sun")), 
+                       ordered=TRUE)
+  
+  # first a factor which cuts the data into month chunks
+  dat$yearmonth<-as.yearmon(dat$date)
+  
+  dat$yearmonthf<-factor(dat$yearmonth)
+  
+  # then find the "week of year" for each day
+  dat$week <- as.numeric(format(dat$date,"%W"))
+  
+  # and now for each monthblock we normalize the week to start at 1 
+  dat <- ddply(dat,
+               .(yearmonthf),
+               transform,
+               monthweek=1+week-min(week))
+  
+  ## Plot
+  p <- ggplotly(ggplot(dat, aes(monthweek, weekdayf, fill = date_total)) + 
+             geom_tile(colour = "grey") + facet_grid(year~monthf) + scale_fill_gradient(low="lightgreen", high="red") +
+             xlab("Week of Month") + ylab("")  + theme_classic() + scale_x_continuous(breaks = seq(1, 6, 1)) + 
+             theme(plot.margin = unit(c(1.5,0,1,0), "cm")) +
+             theme(strip.text.x = element_text(size = 12, colour = "blue")) +
+             labs(fill="Total spent ($)"))  %>% layout(height = 600)
+
+  
+  return(p)
+}
+
+
+sankey_diag <- function() {
+  con <- dbConnect(
+    Postgres(),
+    dbname = "d2sjdih8tegcuc",
+    host = "ec2-184-72-238-22.compute-1.amazonaws.com",
+    port = '5432',
+    user = "xkktypszvisogc",
+    password = "35b7eb67cab6ea1750e5877d61c3415851d6f1ca9c5782ec0b6bf91ede8acbea",
+    sslmode = 'require'
+  )
+  
+  ## Get data from database
+  pur_hist <- dbGetQuery(con, "SELECT * FROM grocery")
+  
+  ## Rename columns
+  colnames(pur_hist) <- c("item", "unitprice", "totalprice", "date", "store")
+  
+  ## Drop blank lines
+  pur_hist <-  pur_hist[!(is.na(pur_hist$item) | pur_hist$item==""), ]
+  
+  ## Extract month from date
+  pur_hist$month <- as.numeric(as.POSIXlt(pur_hist$date)$mon+1)
+  
+  pur_hist$month <- factor(pur_hist$month,
+                           levels=as.character(1:12),
+                           labels=c("January","February","March","April","May", 
+                                    "June","July","August","September","October","November","December"),
+                           ordered=TRUE)
+  
+  ## Group by month and store
+  dat <- pur_hist %>% 
+    group_by(month, store) %>%
+    summarise(month_total=sum(totalprice))
+    
+  dat <- dat[order(dat$month),]
+  
+  # From these flows we need to create a node data frame: it lists every entities involved in the flow
+  nodes <- data.frame(
+    name=c(as.character(dat$month), 
+           as.character(dat$store)) %>% unique()
+  )
+  
+  # With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
+  dat$IDsource <- match(dat$month, nodes$name)-1 
+  dat$IDtarget <- match(dat$store, nodes$name)-1
+  
+  # Set group
+  dat$group <- as.factor(c(dat$month))
+  
+  nodes$group <- as.factor(c("my_unique_group"))
+  
+  my_color <- 'd3.scaleOrdinal() .domain(["January","February","March","April","May",
+                                          "June","July","August","September","October",
+                                          "November","December", "my_unique_group"]) .range(["#FFE74C", "#FF5964", "#33E872", "#8A4F7D", "#FFB997",
+                                                                                             "#FFE74C", "#FF5964", "#33E872", "#8A4F7D", "#FFB997",
+                                                                                             "#FFE74C", "#FF5964", "#808080"])'
+  # Make the Network
+  p <- sankeyNetwork(Links = dat, Nodes = nodes,
+                     Source = "IDsource", Target = "IDtarget",
+                     Value = "month_total", NodeID = "name", 
+                     colourScale =  my_color, LinkGroup='group', NodeGroup='group',
+                     sinksRight=FALSE, iterations = 0, fontSize = 18, units="$", 
+                     height=800)
+  
+  return(p)
+}

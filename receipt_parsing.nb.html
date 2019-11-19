@@ -1753,7 +1753,7 @@ summary {
 <p>Try executing this chunk by clicking the <em>Run</em> button within the chunk or by placing your cursor inside it and pressing <em>Cmd+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShSUG9zdGdyZXMpXG5saWJyYXJ5KERCSSlcbmxpYnJhcnkoa25pdHIpXG5saWJyYXJ5KGh0dHIpXG5saWJyYXJ5KFJDdXJsKVxubGlicmFyeSh4bWwyKVxubGlicmFyeShqc29ubGl0ZSlcbmxpYnJhcnkodGlkeXIpXG5saWJyYXJ5KERUKVxubGlicmFyeShEVGVkaXQpXG5saWJyYXJ5KG1hZ3JpdHRyKVxubGlicmFyeShzaGlueWpzKVxubGlicmFyeShWOClcbmxpYnJhcnkocGx5cilcbmxpYnJhcnkoZHBseXIpXG5cblxubGluayA8LSAnaHR0cHM6Ly9pLmliYi5jby9oMUZ0OXExL0lNRy0wMDYzLmpwZydcblxucmVzIDwtXG4gIEdFVChcbiAgICBzcHJpbnRmKFxuICAgICAgXCJodHRwczovL2FwaS5vY3Iuc3BhY2UvcGFyc2UvaW1hZ2V1cmw/YXBpa2V5PTJmNDIwZjUxM2I4ODk1NyZ1cmw9JXMmaXNUYWJsZT10cnVlJk9DUkVuZ2luZT0yXCIsXG4gICAgICBsaW5rXG4gICAgKVxuICApXG5cbnJlc190ZXh0IDwtIGNvbnRlbnQocmVzLCBcInRleHRcIilcblxucmVzX2pzb24gPC0gZnJvbUpTT04ocmVzX3RleHQsIGZsYXR0ZW4gPSBUUlVFKVxuXG52IDwtIHJlc19qc29uJFBhcnNlZFJlc3VsdHNbJ1BhcnNlZFRleHQnXSRQYXJzZWRUZXh0XG4gICAgXG5cblxuXG5cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShSUG9zdGdyZXMpXG5saWJyYXJ5KERCSSlcbmxpYnJhcnkoa25pdHIpXG5saWJyYXJ5KGh0dHIpXG5saWJyYXJ5KFJDdXJsKVxubGlicmFyeSh4bWwyKVxubGlicmFyeShqc29ubGl0ZSlcbmxpYnJhcnkodGlkeXIpXG5saWJyYXJ5KERUKVxubGlicmFyeShEVGVkaXQpXG5saWJyYXJ5KG1hZ3JpdHRyKVxubGlicmFyeShzaGlueWpzKVxubGlicmFyeShWOClcbmxpYnJhcnkocGx5cilcbmxpYnJhcnkoZHBseXIpXG5cblxuI2xpbmsgPC0gJ2h0dHBzOi8vaS5pYmIuY28vc0Y3MHB6Ni9obWFydC5qcGcnXG4jbGluayA8LSBcImh0dHBzOi8vaS5pYmIuY28vSkJ6Q21RUy9JbEh0MlhGLmpwZ1wiXG5cbmxpbmsgPC0gXCJodHRwczovL2kuaWJiLmNvL2JGcWdLbjcvbG9ibGF3czQuanBnXCJcblxuXG5yZXMgPC1cbiAgR0VUKFxuICAgIHNwcmludGYoXG4gICAgICBcImh0dHBzOi8vYXBpLm9jci5zcGFjZS9wYXJzZS9pbWFnZXVybD9hcGlrZXk9MmY0MjBmNTEzYjg4OTU3JnVybD0lcyZpc1RhYmxlPXRydWUmT0NSRW5naW5lPTJcIixcbiAgICAgIGxpbmtcbiAgICApXG4gIClcblxucmVzX3RleHQgPC0gY29udGVudChyZXMsIFwidGV4dFwiKVxuXG5yZXNfanNvbiA8LSBmcm9tSlNPTihyZXNfdGV4dCwgZmxhdHRlbiA9IFRSVUUpXG5cbnYgPC0gcmVzX2pzb24kUGFyc2VkUmVzdWx0c1snUGFyc2VkVGV4dCddJFBhcnNlZFRleHRcbiBcbmsgPC0gbGlzdCgpXG5cbmkgPC0gMVxuXG5mb3IgKHIgaW4gc3Ryc3BsaXQodiwgJ1xcdFxcclxcbicpKSB7XG4gICAgcHJpbnQoc3Ryc3BsaXQociwgJ1xcdCcpKVxuICAgIGtbW2ldXSA8LSBzdHJzcGxpdChyLCAnXFx0JylcbiAgICBpIDwtIGkgKyAxXG4gIH1cbmBgYCJ9 -->
 <pre class="r"><code>library(RPostgres)
 library(DBI)
 library(knitr)
@@ -1771,7 +1771,11 @@ library(plyr)
 library(dplyr)
 
 
-link &lt;- 'https://i.ibb.co/h1Ft9q1/IMG-0063.jpg'
+#link &lt;- 'https://i.ibb.co/sF70pz6/hmart.jpg'
+#link &lt;- &quot;https://i.ibb.co/JBzCmQS/IlHt2XF.jpg&quot;
+
+link &lt;- &quot;https://i.ibb.co/bFqgKn7/loblaws4.jpg&quot;
+
 
 res &lt;-
   GET(
@@ -1786,128 +1790,173 @@ res_text &lt;- content(res, &quot;text&quot;)
 res_json &lt;- fromJSON(res_text, flatten = TRUE)
 
 v &lt;- res_json$ParsedResults['ParsedText']$ParsedText
-    
-</code></pre>
+ 
+k &lt;- list()
+
+i &lt;- 1
+
+for (r in strsplit(v, '\t\r\n')) {
+    print(strsplit(r, '\t'))
+    k[[i]] &lt;- strsplit(r, '\t')
+    i &lt;- i + 1
+  }</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxua1tbMV1dXG5gYGAifQ== -->
-<pre class="r"><code>k[[1]]</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiW1sxXV1cblsxXSBcIjI1LU5BVFVSQUwgRk9PRFNcIlxuXG5bWzJdXVxuWzFdIFwiMDYwMzgzNjkwNjggUEMgRUdHIEJST1dOIE9SRyBNUkpcIiBcIjUuOTlcIiAgICAgICAgICAgICAgICAgICAgICAgICAgICBcblxuW1szXV1cblsxXSBcIjcyODIyOTEzOTkxIFRFUlJBIEtDIFNXVCBQT1RcIiBcIkhNUkozLiA5OVwiICAgICAgICAgICAgICAgICAgIFxuXG5bWzRdXVxuWzFdIFwiMjctUFJPRFVDRVwiXG5cbltbNV1dXG5bMV0gXCIwNjAzODMxODY0MCBQQ08gQ1JFTUlOSSAyMjcgTVJKXCJcblxuW1s2XV1cblsxXSBcIiQyLjc5IGVhIG9yIDIvJDUuIDAwIEtCXCJcblxuW1s3XV1cblsxXSBcIjIgMi8kNS4gMDBcIiBcIjUuMDBcIiAgICAgIFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiW1sxXV1cblsxXSBcIjIxLUdST0NFUllcIlxuXG5bWzJdXVxuWzFdIFwiMDYwMzgzNjQgMzMyIFBDIFZJTkVHQVJcIiBcIkhSSlwiICAgICAgICAgICAgICAgICAgICAgXCIzLjdcIiAgICAgICAgICAgICAgICAgICAgXG5cbltbM11dXG5bMV0gXCIwNjAzODM4NyAxMDRcIiAgIFwiUEMgQk0gQ09STiBXSExcIiBcIkhSSlwiICAgICAgICAgICAgXCIuOTlcIiAgICAgICAgICAgXG4ifQ== -->
 <pre><code>[[1]]
-[1] &quot;25-NATURAL FOODS&quot;
+[1] &quot;21-GROCERY&quot;
 
 [[2]]
-[1] &quot;06038369068 PC EGG BROWN ORG MRJ&quot; &quot;5.99&quot;                            
+[1] &quot;06038364 332 PC VINEGAR&quot; &quot;HRJ&quot;                     &quot;3.7&quot;                    
 
 [[3]]
-[1] &quot;72822913991 TERRA KC SWT POT&quot; &quot;HMRJ3. 99&quot;                   
-
-[[4]]
-[1] &quot;27-PRODUCE&quot;
-
-[[5]]
-[1] &quot;06038318640 PCO CREMINI 227 MRJ&quot;
-
-[[6]]
-[1] &quot;$2.79 ea or 2/$5. 00 KB&quot;
-
-[[7]]
-[1] &quot;2 2/$5. 00&quot; &quot;5.00&quot;      </code></pre>
+[1] &quot;06038387 104&quot;   &quot;PC BM CORN WHL&quot; &quot;HRJ&quot;            &quot;.99&quot;           </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueiA8LSBhcy5kYXRhLmZyYW1lKGRvLmNhbGwocmJpbmQsIGtbWzFdXSkpXG5gYGAifQ== -->
+<pre class="r"><code>z &lt;- as.data.frame(do.call(rbind, k[[1]]))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoibnVtYmVyIG9mIGNvbHVtbnMgb2YgcmVzdWx0IGlzIG5vdCBhIG11bHRpcGxlIG9mIHZlY3RvciBsZW5ndGggKGFyZyAyKVxuIn0= -->
+<pre><code>number of columns of result is not a multiple of vector length (arg 2)</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzdHJpbmdyKVxuXG5rIDwtIGxpc3QoKVxuICAgIFxuaSA8LSAxXG4gICAgXG5mb3IgKHIgaW4gc3Ryc3BsaXQodiwgJ1xcdFxcclxcbicpW1sxXV0pIHtcbiAgICBwcmludChzdHJzcGxpdChyLCAnXFx0JylbWzFdXSlcbiAgXG4gICAgaWYgKChsZW5ndGgoc3Ryc3BsaXQociwgJ1xcdCcpW1sxXV0pID09IDEpICYgKHN0cl9kZXRlY3Qoc3Ryc3BsaXQociwgJ1xcdCcpW1sxXV0sIFwiKFxcXFxkKy1bQS1aXSlcXFxcdysuXCIpPT1GQUxTRSkpIHtcbiAgICAgIGtbW2ldXSA8LSBzdHJzcGxpdChyLCAnXFx0JylbWzFdXVxuICAgICAgaSA8LSBpICsgMVxuICAgIH0gZWxzZSBpZiAobGVuZ3RoKHN0cnNwbGl0KHIsICdcXHQnKVtbMV1dKSA+IDEpIHtcbiAgICAgIGtbW2ldXSA8LSBzdHJzcGxpdChyLCAnXFx0JylbWzFdXVxuICAgICAgaSA8LSBpICsgMVxuICAgIH1cbiAgXG4gICAgcHJpbnQobGVuZ3RoKHN0cnNwbGl0KHIsICdcXHQnKVtbMV1dKSkgIyMgSWYgbGVuZ3RoPTFcbiAgICBcbiAgICBwcmludChzdHJfZGV0ZWN0KHN0cnNwbGl0KHIsICdcXHQnKSwgXCIoXFxcXGQrLVtBLVpdKVxcXFx3K1xcXFxzXFxcXHcrXCIpKVxuICAgIHByaW50KFwiLS0tXCIpXG4gICAgI3ByaW50KGxlbmd0aChzdHJzcGxpdChyLCAnXFx0JylbWzFdXSkpXG5cblxuICB9XG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueiA8LSB6W3NlcSgxLCBucm93KHopLCAyKSAsXVxuXG56IDwtIGFzLmRhdGEuZnJhbWUoeilcblxuelxuYGBgIn0= -->
+<pre class="r"><code>z &lt;- z[seq(1, nrow(z), 2) ,]
+
+z &lt;- as.data.frame(z)
+
+z</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MSwibnJvdyI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUEyMVEwVTdDTUJUdEdNT3dSRVBpRHpUUm1QQ3dPWUVZNTVNVDV1WURtNW1ROEZyR1VHSnR5VGJVR0w4ZHZTc3J4c2FYM250UFQzdk91Y2xvMWpkbkprSklSM29MVGdOYVpFd25kOVlWUXMwR0RCcHFvblpWUCtENldBQklQNFRhRUs5RS9VTnMwZXd0b3dWMEhjSFlvWjF1N0dPK0hJWngrSVVIamhQVStGbVErSDUwNjNzUmZueEk0dW5rR2p2MlpaL084YzNwQlI2NDUzT1kzVUhOUGhIczBKdDA0eVR3b3ZzaDlrZmUyQnNEdVdlN0xxNE94WTZSVWxKSU4zdVBTNUtXUElkdXE5SVplYzFVdXZhcHNObzVmN2NsVXk1RCsxMkcvcTM4WUM1SVNleGxEay8rRVQzZzYzTEZHWHpXcURac3FQSzVBblEyckJKZldPbnpocjFZL1Y2bFVEdEF0YVBhemI3WGRwcE42Y3lRcThqWTA0cGxNajRsODR6V3d4R2tGQ0h0ZGI1aXBZd0NhR0dYdkNTU1o2YWNTa1NFUTlzZngyTE9LbGtDQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["z"],"name":[1],"type":["fctr"],"align":["left"]}],"data":[{"1":"GREENHAT)ORGANIC EDAMAM @$2.99 2.99"},{"1":"GREENBEAN SPROUT: 0.63lb @$1 49/b 0.94"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaWYgKGRpbSh6KVsyXSAhPSAyKSB7XG4gIHogPC0gc2VwYXJhdGUoXG4gIGRhdGEgPSB6LFxuICBjb2wgPSAneicsXG4gIGludG8gPSBjKFwiSXRlbVwiLCBcIlVuaXRQcmljZVwiKSxcbiAgc2VwID0gXCIgXCIpXG59XG5gYGAifQ== -->
+<pre class="r"><code>if (dim(z)[2] != 2) {
+  z &lt;- separate(
+  data = z,
+  col = 'z',
+  into = c(&quot;Item&quot;, &quot;UnitPrice&quot;),
+  sep = &quot; &quot;)
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXhwZWN0ZWQgMiBwaWVjZXMuIEFkZGl0aW9uYWwgcGllY2VzIGRpc2NhcmRlZCBpbiAyIHJvd3MgWzEsIDJdLlxuIn0= -->
+<pre><code>Expected 2 pieces. Additional pieces discarded in 2 rows [1, 2].</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuelxuYGBgIn0= -->
+<pre class="r"><code>z</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MiwibnJvdyI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVF3VzdDTUF4MVN3TnFwVTJWOWhVN3RFTGlNdTJXalk1eG9LQ3VsYmlHa20zUlNvTFNvTzNyMlpLU1NDeVgySDdPODN0Mk5kL09rbTBDQUNNWWpmV0xkQXFvcVYreUI0QW8xRVVBRWNRbS91ajJuVTRNbUE3eDBrZ1hWVkdVcjdpK1gxY0xYQzZmTFI0UCtGT0JTNDh3THVaNGhWZTJtcnh0cW5WVFAzcHlpSk1EN1QxbXRGVDA0TVkzbkttTlpDMzFtTEVVMzdsajMxakR3U1grbDJnNzBqc0pCeVo3b2tqK0xqVmZWMmVQTWhGSHhRVFhwTkNjQW5ua1FIcEFldUxHeVQ1clAwLzhLNXROallLMUE5YWV0WGFkRzgzdzE4NUM3bXlVZnpCT25mbU83R2huaTF1OThyQnhmcFNNSzdlS1J2dGNDVVhjdjZRVm5VT0c1ZUQ4QndpL2RLa0NBZ0FBIn0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["UnitPrice"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"GREENHAT)ORGANIC","2":"EDAMAM"},{"1":"GREENBEAN","2":"SPROUT:"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5cbnpcbmBgYCJ9 -->
+<pre class="r"><code>
+
+z</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxueiA8LSBzZXBhcmF0ZShcbiAgZGF0YSA9IHosXG4gIGNvbCA9ICdWMScsXG4gIGludG8gPSBjKFwiSXRlbVwiLCBcIlVuaXRQcmljZVwiKSxcbiAgc2VwID0gXCIgQFwiXG4pXG5cbnpcbmBgYCJ9 -->
+<pre class="r"><code>z &lt;- separate(
+  data = z,
+  col = 'V1',
+  into = c(&quot;Item&quot;, &quot;UnitPrice&quot;),
+  sep = &quot; @&quot;
+)
+
+z</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbmFtZXMoeikgPC1cbiAgYyhcIkl0ZW1cIiwgXCJVbml0UHJpY2VcIiwgXCJUb3RhbFByaWNlXCIpXG5gYGAifQ== -->
+<pre class="r"><code>colnames(z) &lt;-
+  c(&quot;Item&quot;, &quot;UnitPrice&quot;, &quot;TotalPrice&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzdHJpbmdyKVxuXG5saW5rIDwtIFwiaHR0cHM6Ly9pLmliYi5jby9iRnFnS243L2xvYmxhd3M0LmpwZ1wiXG5cbnJlcyA8LVxuICBHRVQoXG4gICAgc3ByaW50ZihcbiAgICAgIFwiaHR0cHM6Ly9hcGkub2NyLnNwYWNlL3BhcnNlL2ltYWdldXJsP2FwaWtleT0yZjQyMGY1MTNiODg5NTcmdXJsPSVzJmlzVGFibGU9dHJ1ZSZPQ1JFbmdpbmU9MlwiLFxuICAgICAgbGlua1xuICAgIClcbiAgKVxuXG5yZXNfdGV4dCA8LSBjb250ZW50KHJlcywgXCJ0ZXh0XCIpXG5cbnJlc19qc29uIDwtIGZyb21KU09OKHJlc190ZXh0LCBmbGF0dGVuID0gVFJVRSlcblxudiA8LSByZXNfanNvbiRQYXJzZWRSZXN1bHRzWydQYXJzZWRUZXh0J10kUGFyc2VkVGV4dFxuIFxuayA8LSBsaXN0KClcblxuaSA8LSAxXG5cbnByaW50KHYpXG5gYGAifQ== -->
 <pre class="r"><code>library(stringr)
 
+link &lt;- &quot;https://i.ibb.co/bFqgKn7/loblaws4.jpg&quot;
+
+res &lt;-
+  GET(
+    sprintf(
+      &quot;https://api.ocr.space/parse/imageurl?apikey=2f420f513b88957&amp;url=%s&amp;isTable=true&amp;OCREngine=2&quot;,
+      link
+    )
+  )
+
+res_text &lt;- content(res, &quot;text&quot;)
+
+res_json &lt;- fromJSON(res_text, flatten = TRUE)
+
+v &lt;- res_json$ParsedResults['ParsedText']$ParsedText
+ 
 k &lt;- list()
-    
+
 i &lt;- 1
-    
+
+print(v)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjEtR1JPQ0VSWVxcdFxcclxcbjA2MDM4MzY0IDMzMiBQQyBWSU5FR0FSXFx0SFJKXFx0My43XFx0XFxyXFxuMDYwMzgzODcgMTA0XFx0UEMgQk0gQ09STiBXSExcXHRIUkpcXHQuOTlcXHRcXHJcXG5cIlxuIn0= -->
+<pre><code>[1] &quot;21-GROCERY\t\r\n06038364 332 PC VINEGAR\tHRJ\t3.7\t\r\n06038387 104\tPC BM CORN WHL\tHRJ\t.99\t\r\n&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuayA8LSBsaXN0KClcblxuaSA8LSAxXG5cbmZvciAociBpbiBzdHJzcGxpdCh2LCAnXFx0XFxyXFxuJylbWzFdXSkge1xuICAgIGlmICgobGVuZ3RoKHN0cnNwbGl0KHIsICdcXHQnKVtbMV1dKSA9PSAxKSAmIChzdHJfZGV0ZWN0KHN0cnNwbGl0KHIsICdcXHQnKVtbMV1dLCBcIihcXFxcZCstW0EtWl0pXFxcXHcrLlwiKT09RkFMU0UpKSB7XG4gICAgICAgcHJpbnQoc3Ryc3BsaXQociwgJ1xcdCcpW1sxXV0pXG4gICAgICAga1tbaV1dIDwtIHN0cnNwbGl0KHIsICdcXHQnKVtbMV1dXG4gICAgICBpIDwtIGkgKyAxXG4gICAgfSBlbHNlIGlmIChsZW5ndGgoc3Ryc3BsaXQociwgJ1xcdCcpW1sxXV0pID4gMSkge1xuICAgICAgcHJpbnQoc3Ryc3BsaXQociwgJ1xcdCcpW1sxXV0pXG4gICAgICBrW1tpXV0gPC0gc3Ryc3BsaXQociwgJ1xcdCcpW1sxXV1cbiAgICAgIGkgPC0gaSArIDFcbiAgICB9XG5cbiAgfVxuYGBgIn0= -->
+<pre class="r"><code>k &lt;- list()
+
+i &lt;- 1
+
 for (r in strsplit(v, '\t\r\n')[[1]]) {
-    print(strsplit(r, '\t')[[1]])
-  
     if ((length(strsplit(r, '\t')[[1]]) == 1) &amp; (str_detect(strsplit(r, '\t')[[1]], &quot;(\\d+-[A-Z])\\w+.&quot;)==FALSE)) {
-      k[[i]] &lt;- strsplit(r, '\t')[[1]]
+       print(strsplit(r, '\t')[[1]])
+       k[[i]] &lt;- strsplit(r, '\t')[[1]]
       i &lt;- i + 1
     } else if (length(strsplit(r, '\t')[[1]]) &gt; 1) {
+      print(strsplit(r, '\t')[[1]])
       k[[i]] &lt;- strsplit(r, '\t')[[1]]
       i &lt;- i + 1
     }
-  
-    print(length(strsplit(r, '\t')[[1]])) ## If length=1
-    
-    print(str_detect(strsplit(r, '\t'), &quot;(\\d+-[A-Z])\\w+\\s\\w+&quot;))
-    print(&quot;---&quot;)
-    #print(length(strsplit(r, '\t')[[1]]))
-
 
   }</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjUtTkFUVVJBTCBGT09EU1wiXG5bMV0gMVxuWzFdIFRSVUVcblsxXSBcIi0tLVwiXG5bMV0gXCIwNjAzODM2OTA2OCBQQyBFR0cgQlJPV04gT1JHIE1SSlwiIFwiNS45OVwiICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
-<pre><code>[1] &quot;25-NATURAL FOODS&quot;
-[1] 1
-[1] TRUE
-[1] &quot;---&quot;
-[1] &quot;06038369068 PC EGG BROWN ORG MRJ&quot; &quot;5.99&quot;                            </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoidGhlIGNvbmRpdGlvbiBoYXMgbGVuZ3RoID4gMSBhbmQgb25seSB0aGUgZmlyc3QgZWxlbWVudCB3aWxsIGJlIHVzZWRcbiJ9 -->
+<pre><code>the condition has length &gt; 1 and only the first element will be used</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMDYwMzgzNjQgMzMyIFBDIFZJTkVHQVJcIiBcIkhSSlwiICAgICAgICAgICAgICAgICAgICAgXCIzLjdcIiAgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code>[1] &quot;06038364 332 PC VINEGAR&quot; &quot;HRJ&quot;                     &quot;3.7&quot;                    </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-output-begin eyJkYXRhIjoidGhlIGNvbmRpdGlvbiBoYXMgbGVuZ3RoID4gMSBhbmQgb25seSB0aGUgZmlyc3QgZWxlbWVudCB3aWxsIGJlIHVzZWRcbiJ9 -->
 <pre><code>the condition has length &gt; 1 and only the first element will be used</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDJcbiJ9 -->
-<pre><code>[1] 2</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYXJndW1lbnQgaXMgbm90IGFuIGF0b21pYyB2ZWN0b3I7IGNvZXJjaW5nXG4ifQ== -->
-<pre><code>argument is not an atomic vector; coercing</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG5bMV0gXCItLS1cIlxuWzFdIFwiNzI4MjI5MTM5OTEgVEVSUkEgS0MgU1dUIFBPVFwiIFwiSE1SSjMuIDk5XCIgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
-<pre><code>[1] FALSE
-[1] &quot;---&quot;
-[1] &quot;72822913991 TERRA KC SWT POT&quot; &quot;HMRJ3. 99&quot;                   </code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoidGhlIGNvbmRpdGlvbiBoYXMgbGVuZ3RoID4gMSBhbmQgb25seSB0aGUgZmlyc3QgZWxlbWVudCB3aWxsIGJlIHVzZWRcbiJ9 -->
-<pre><code>the condition has length &gt; 1 and only the first element will be used</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDJcbiJ9 -->
-<pre><code>[1] 2</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYXJndW1lbnQgaXMgbm90IGFuIGF0b21pYyB2ZWN0b3I7IGNvZXJjaW5nXG4ifQ== -->
-<pre><code>argument is not an atomic vector; coercing</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG5bMV0gXCItLS1cIlxuWzFdIFwiMjctUFJPRFVDRVwiXG5bMV0gMVxuWzFdIEZBTFNFXG5bMV0gXCItLS1cIlxuWzFdIFwiMDYwMzgzMTg2NDAgUENPIENSRU1JTkkgMjI3IE1SSlwiXG5bMV0gMVxuWzFdIEZBTFNFXG5bMV0gXCItLS1cIlxuWzFdIFwiJDIuNzkgZWEgb3IgMi8kNS4gMDAgS0JcIlxuWzFdIDFcblsxXSBGQUxTRVxuWzFdIFwiLS0tXCJcblsxXSBcIjIgMi8kNS4gMDBcIiBcIjUuMDBcIiAgICAgIFxuIn0= -->
-<pre><code>[1] FALSE
-[1] &quot;---&quot;
-[1] &quot;27-PRODUCE&quot;
-[1] 1
-[1] FALSE
-[1] &quot;---&quot;
-[1] &quot;06038318640 PCO CREMINI 227 MRJ&quot;
-[1] 1
-[1] FALSE
-[1] &quot;---&quot;
-[1] &quot;$2.79 ea or 2/$5. 00 KB&quot;
-[1] 1
-[1] FALSE
-[1] &quot;---&quot;
-[1] &quot;2 2/$5. 00&quot; &quot;5.00&quot;      </code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoidGhlIGNvbmRpdGlvbiBoYXMgbGVuZ3RoID4gMSBhbmQgb25seSB0aGUgZmlyc3QgZWxlbWVudCB3aWxsIGJlIHVzZWRcbiJ9 -->
-<pre><code>the condition has length &gt; 1 and only the first element will be used</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDJcbiJ9 -->
-<pre><code>[1] 2</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYXJndW1lbnQgaXMgbm90IGFuIGF0b21pYyB2ZWN0b3I7IGNvZXJjaW5nXG4ifQ== -->
-<pre><code>argument is not an atomic vector; coercing</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIEZBTFNFXG5bMV0gXCItLS1cIlxuIn0= -->
-<pre><code>[1] FALSE
-[1] &quot;---&quot;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMDYwMzgzODcgMTA0XCIgICBcIlBDIEJNIENPUk4gV0hMXCIgXCJIUkpcIiAgICAgICAgICAgIFwiLjk5XCIgICAgICAgICAgIFxuIn0= -->
+<pre><code>[1] &quot;06038387 104&quot;   &quot;PC BM CORN WHL&quot; &quot;HRJ&quot;            &quot;.99&quot;           </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1916,30 +1965,223 @@ for (r in strsplit(v, '\t\r\n')[[1]]) {
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQoaylcbmBgYCJ9 -->
 <pre class="r"><code>print(k)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiW1sxXV1cblsxXSBcIjA2MDM4MzY5MDY4IFBDIEVHRyBCUk9XTiBPUkcgTVJKXCIgXCI1Ljk5XCIgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG5cbltbMl1dXG5bMV0gXCI3MjgyMjkxMzk5MSBURVJSQSBLQyBTV1QgUE9UXCIgXCJITVJKMy4gOTlcIiAgICAgICAgICAgICAgICAgICBcblxuW1szXV1cblsxXSBcIjA2MDM4MzE4NjQwIFBDTyBDUkVNSU5JIDIyNyBNUkpcIlxuXG5bWzRdXVxuWzFdIFwiJDIuNzkgZWEgb3IgMi8kNS4gMDAgS0JcIlxuXG5bWzVdXVxuWzFdIFwiMiAyLyQ1LiAwMFwiIFwiNS4wMFwiICAgICAgXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiW1sxXV1cblsxXSBcIjA2MDM4MzY0IDMzMiBQQyBWSU5FR0FSXCIgXCJIUkpcIiAgICAgICAgICAgICAgICAgICAgIFwiMy43XCIgICAgICAgICAgICAgICAgICAgIFxuXG5bWzJdXVxuWzFdIFwiMDYwMzgzODcgMTA0XCIgICBcIlBDIEJNIENPUk4gV0hMXCIgXCJIUkpcIiAgICAgICAgICAgIFwiLjk5XCIgICAgICAgICAgIFxuIn0= -->
 <pre><code>[[1]]
-[1] &quot;06038369068 PC EGG BROWN ORG MRJ&quot; &quot;5.99&quot;                            
+[1] &quot;06038364 332 PC VINEGAR&quot; &quot;HRJ&quot;                     &quot;3.7&quot;                    
 
 [[2]]
-[1] &quot;72822913991 TERRA KC SWT POT&quot; &quot;HMRJ3. 99&quot;                   
-
-[[3]]
-[1] &quot;06038318640 PCO CREMINI 227 MRJ&quot;
-
-[[4]]
-[1] &quot;$2.79 ea or 2/$5. 00 KB&quot;
-
-[[5]]
-[1] &quot;2 2/$5. 00&quot; &quot;5.00&quot;      </code></pre>
+[1] &quot;06038387 104&quot;   &quot;PC BM CORN WHL&quot; &quot;HRJ&quot;            &quot;.99&quot;           </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Cmd+Option+I</em>.</p>
-<p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Cmd+Shift+K</em> to preview the HTML file).</p>
-<p>The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike <em>Knit</em>, <em>Preview</em> does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShSUG9zdGdyZXMpXG5saWJyYXJ5KERCSSlcblxuY29uIDwtIGRiQ29ubmVjdChcbiAgUG9zdGdyZXMoKSxcbiAgZGJuYW1lID0gXCJkMnNqZGloOHRlZ2N1Y1wiLFxuICBob3N0ID0gXCJlYzItMTg0LTcyLTIzOC0yMi5jb21wdXRlLTEuYW1hem9uYXdzLmNvbVwiLFxuICBwb3J0ID0gJzU0MzInLFxuICB1c2VyID0gXCJ4a2t0eXBzenZpc29nY1wiLFxuICBwYXNzd29yZCA9IFwiMzViN2ViNjdjYWI2ZWExNzUwZTU4NzdkNjFjMzQxNTg1MWQ2ZjFjYTljNTc4MmVjMGI2YmY5MWVkZThhY2JlYVwiLFxuICBzc2xtb2RlID0gJ3JlcXVpcmUnXG4pXG5cbmRmID0gZGF0YS5mcmFtZShcIml0ZW1cIiA9IGNoYXJhY3RlcigxKSxcbiAgICAgICAgICAgICAgICBcInVuaXRwcmljZVwiPSBkb3VibGUoMSksXG4gICAgICAgICAgICAgICAgXCJ0b3RhbHByaWNlXCI9IGRvdWJsZSgxKSxcbiAgICAgICAgICAgICAgICBcImRhdGVcIiA9IFN5cy5EYXRlKCksXG4gICAgICAgICAgICAgICAgXCJzdG9yZVwiID0gY2hhcmFjdGVyKDEpLFxuICAgICAgICAgICAgICAgIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSlcblxuZGJXcml0ZVRhYmxlKGNvbiwgXCJncm9jZXJ5XCIsIGRmLCBvdmVyd3JpdGU9VFJVRSlcbmBgYCJ9 -->
+<pre class="r"><code>library(RPostgres)
+library(DBI)
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KbGlicmFyeShSUG9zdGdyZXMpCmxpYnJhcnkoREJJKQpsaWJyYXJ5KGtuaXRyKQpsaWJyYXJ5KGh0dHIpCmxpYnJhcnkoUkN1cmwpCmxpYnJhcnkoeG1sMikKbGlicmFyeShqc29ubGl0ZSkKbGlicmFyeSh0aWR5cikKbGlicmFyeShEVCkKbGlicmFyeShEVGVkaXQpCmxpYnJhcnkobWFncml0dHIpCmxpYnJhcnkoc2hpbnlqcykKbGlicmFyeShWOCkKbGlicmFyeShwbHlyKQpsaWJyYXJ5KGRwbHlyKQoKCmxpbmsgPC0gJ2h0dHBzOi8vaS5pYmIuY28vaDFGdDlxMS9JTUctMDA2My5qcGcnCgpyZXMgPC0KICBHRVQoCiAgICBzcHJpbnRmKAogICAgICAiaHR0cHM6Ly9hcGkub2NyLnNwYWNlL3BhcnNlL2ltYWdldXJsP2FwaWtleT0yZjQyMGY1MTNiODg5NTcmdXJsPSVzJmlzVGFibGU9dHJ1ZSZPQ1JFbmdpbmU9MiIsCiAgICAgIGxpbmsKICAgICkKICApCgpyZXNfdGV4dCA8LSBjb250ZW50KHJlcywgInRleHQiKQoKcmVzX2pzb24gPC0gZnJvbUpTT04ocmVzX3RleHQsIGZsYXR0ZW4gPSBUUlVFKQoKdiA8LSByZXNfanNvbiRQYXJzZWRSZXN1bHRzWydQYXJzZWRUZXh0J10kUGFyc2VkVGV4dApgYGAKCmBgYHtyfQprW1sxXV0KYGBgCgpgYGB7cn0KbGlicmFyeShzdHJpbmdyKQoKayA8LSBsaXN0KCkKICAgIAppIDwtIDEKICAgIApmb3IgKHIgaW4gc3Ryc3BsaXQodiwgJ1x0XHJcbicpW1sxXV0pIHsKICAgIHByaW50KHN0cnNwbGl0KHIsICdcdCcpW1sxXV0pCiAgCiAgICBpZiAoKGxlbmd0aChzdHJzcGxpdChyLCAnXHQnKVtbMV1dKSA9PSAxKSAmIChzdHJfZGV0ZWN0KHN0cnNwbGl0KHIsICdcdCcpW1sxXV0sICIoXFxkKy1bQS1aXSlcXHcrLiIpPT1GQUxTRSkpIHsKICAgICAga1tbaV1dIDwtIHN0cnNwbGl0KHIsICdcdCcpW1sxXV0KICAgICAgaSA8LSBpICsgMQogICAgfSBlbHNlIGlmIChsZW5ndGgoc3Ryc3BsaXQociwgJ1x0JylbWzFdXSkgPiAxKSB7CiAgICAgIGtbW2ldXSA8LSBzdHJzcGxpdChyLCAnXHQnKVtbMV1dCiAgICAgIGkgPC0gaSArIDEKICAgIH0KICAKICAgIHByaW50KGxlbmd0aChzdHJzcGxpdChyLCAnXHQnKVtbMV1dKSkgIyMgSWYgbGVuZ3RoPTEKICAgIAogICAgcHJpbnQoc3RyX2RldGVjdChzdHJzcGxpdChyLCAnXHQnKSwgIihcXGQrLVtBLVpdKVxcdytcXHNcXHcrIikpCiAgICBwcmludCgiLS0tIikKICAgICNwcmludChsZW5ndGgoc3Ryc3BsaXQociwgJ1x0JylbWzFdXSkpCgoKICB9CmBgYAoKYGBge3J9CnByaW50KGspCmBgYApBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ21kK09wdGlvbitJKi4KCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVzcyAqQ21kK1NoaWZ0K0sqIHRvIHByZXZpZXcgdGhlIEhUTUwgZmlsZSkuIAoKVGhlIHByZXZpZXcgc2hvd3MgeW91IGEgcmVuZGVyZWQgSFRNTCBjb3B5IG9mIHRoZSBjb250ZW50cyBvZiB0aGUgZWRpdG9yLiBDb25zZXF1ZW50bHksIHVubGlrZSAqS25pdCosICpQcmV2aWV3KiBkb2VzIG5vdCBydW4gYW55IFIgY29kZSBjaHVua3MuIEluc3RlYWQsIHRoZSBvdXRwdXQgb2YgdGhlIGNodW5rIHdoZW4gaXQgd2FzIGxhc3QgcnVuIGluIHRoZSBlZGl0b3IgaXMgZGlzcGxheWVkLgoK</div>
+con &lt;- dbConnect(
+  Postgres(),
+  dbname = &quot;d2sjdih8tegcuc&quot;,
+  host = &quot;ec2-184-72-238-22.compute-1.amazonaws.com&quot;,
+  port = '5432',
+  user = &quot;xkktypszvisogc&quot;,
+  password = &quot;35b7eb67cab6ea1750e5877d61c3415851d6f1ca9c5782ec0b6bf91ede8acbea&quot;,
+  sslmode = 'require'
+)
+
+df = data.frame(&quot;item&quot; = character(1),
+                &quot;unitprice&quot;= double(1),
+                &quot;totalprice&quot;= double(1),
+                &quot;date&quot; = Sys.Date(),
+                &quot;store&quot; = character(1),
+                stringsAsFactors = FALSE)
+
+dbWriteTable(con, &quot;grocery&quot;, df, overwrite=TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucXVlcnkgPC0gXCJVUERBVEUgZ3JvY2VyeVxuICAgICAgICAgIFNFVCBzdG9yZT0nSC1NYXJ0J1xuICAgICAgICAgIFdIRVJFIHN0b3JlPSdIIE1hcnQnXCJcblxuZGJTZW5kU3RhdGVtZW50KGNvbiwgcXVlcnkpXG5gYGAifQ== -->
+<pre class="r"><code>query &lt;- &quot;UPDATE grocery
+          SET store='H-Mart'
+          WHERE store='H Mart'&quot;
+
+dbSendStatement(con, query)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiPFBxUmVzdWx0PlxuICBTUUwgIFVQREFURSBncm9jZXJ5XG4gICAgICAgICAgU0VUIHN0b3JlPSdILU1hcnQnXG4gICAgICAgICAgV0hFUkUgc3RvcmU9J0ggTWFydCdcbiAgUk9XUyBGZXRjaGVkOiAwIFtjb21wbGV0ZV1cbiAgICAgICBDaGFuZ2VkOiA1XG4ifQ== -->
+<pre><code>&lt;PqResult&gt;
+  SQL  UPDATE grocery
+          SET store='H-Mart'
+          WHERE store='H Mart'
+  ROWS Fetched: 0 [complete]
+       Changed: 5</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShxdWFudG1vZClcbmxpYnJhcnkoZ2dwbG90MilcbmxpYnJhcnkoem9vKVxubGlicmFyeShwbG90bHkpXG5saWJyYXJ5KFJQb3N0Z3JlcylcbmxpYnJhcnkoREJJKVxuXG5jb24gPC0gZGJDb25uZWN0KFxuICAgIFBvc3RncmVzKCksXG4gICAgZGJuYW1lID0gXCJkMnNqZGloOHRlZ2N1Y1wiLFxuICAgIGhvc3QgPSBcImVjMi0xODQtNzItMjM4LTIyLmNvbXB1dGUtMS5hbWF6b25hd3MuY29tXCIsXG4gICAgcG9ydCA9ICc1NDMyJyxcbiAgICB1c2VyID0gXCJ4a2t0eXBzenZpc29nY1wiLFxuICAgIHBhc3N3b3JkID0gXCIzNWI3ZWI2N2NhYjZlYTE3NTBlNTg3N2Q2MWMzNDE1ODUxZDZmMWNhOWM1NzgyZWMwYjZiZjkxZWRlOGFjYmVhXCIsXG4gICAgc3NsbW9kZSA9ICdyZXF1aXJlJ1xuICApXG5cbiMjIEFnZ3JlZ2F0ZSBieSBkYXRlXG5wdXJfaGlzdCA8LSBkYkdldFF1ZXJ5KGNvbiwgXCJTRUxFQ1QgKiBGUk9NIGdyb2NlcnlcIilcblxud3JpdGUuY3N2KHB1cl9oaXN0LCAnLi9wdXJjaGFzZV9oaXN0b3J5LmNzdicpXG5gYGAifQ== -->
+<pre class="r"><code>library(quantmod)
+library(ggplot2)
+library(zoo)
+library(plotly)
+library(RPostgres)
+library(DBI)
+
+con &lt;- dbConnect(
+    Postgres(),
+    dbname = &quot;d2sjdih8tegcuc&quot;,
+    host = &quot;ec2-184-72-238-22.compute-1.amazonaws.com&quot;,
+    port = '5432',
+    user = &quot;xkktypszvisogc&quot;,
+    password = &quot;35b7eb67cab6ea1750e5877d61c3415851d6f1ca9c5782ec0b6bf91ede8acbea&quot;,
+    sslmode = 'require'
+  )
+
+## Aggregate by date
+pur_hist &lt;- dbGetQuery(con, &quot;SELECT * FROM grocery&quot;)
+
+write.csv(pur_hist, './purchase_history.csv')</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>colnames(pur_hist) &lt;- c(“item”, “unitprice”, “totalprice”, “date”, “store”)</p>
+<p>pur_hist &lt;- pur_hist[!(is.na(pur_hist<span class="math inline">\(item) | pur_hist\)</span>item==&quot;&quot;), ]</p>
+<p>pur_hist &lt;- pur_hist %&gt;% complete(date = seq.Date(as.Date(“2019-08-01”), max(date), by=“day”))</p>
+<p>dat<span class="math inline">\(month_total[is.na(dat\)</span>month_total)] &lt;- 0</p>
+<p>pur_hist &lt;- pur_hist %&gt;% separate(‘date’, sep=“-”, into = c(“year”, “month”, “day”))</p>
+<p>dat &lt;- pur_hist %&gt;% group_by(store, month) %&gt;% summarise(month_total=sum(totalprice))</p>
+<p>dat ```</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShhbGx1dmlhbClcblxuZGF0IDwtIGRhdFtjb21wbGV0ZS5jYXNlcyhkYXQpLCBdXG5cbmFsbHV2aWFsKGRhdFssMToyXSwgZnJlcT1kYXQkbW9udGhfdG90YWwsXG4gICAgICAgICBjZXggPSAwLjdcbilcbmBgYCJ9 -->
+<pre class="r"><code>library(alluvial)
+
+dat &lt;- dat[complete.cases(dat), ]
+
+alluvial(dat[,1:2], freq=dat$month_total,
+         cex = 0.7
+)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShnZ3Bsb3QyKSBcbmxpYnJhcnkoZ2dhbGx1dmlhbClcblxuZ2dwbG90KGRhdCxcbiAgICAgICBhZXMoeSA9IG1vbnRoX3RvdGFsLCBheGlzMSA9IG1vbnRoLCBheGlzMiA9IHN0b3JlKSkgK1xuICBnZW9tX2FsbHV2aXVtKGFlcyhmaWxsID0gc3RvcmUpLCB3aWR0aCA9IDEvMTIpICtcbiAgZ2VvbV9zdHJhdHVtKHdpZHRoID0gMS8xMiwgZmlsbCA9IFwiYmxhY2tcIiwgY29sb3IgPSBcImdyZXlcIikgK1xuICBnZW9tX2xhYmVsKHN0YXQgPSBcInN0cmF0dW1cIiwgbGFiZWwuc3RyYXRhID0gVFJVRSkgK1xuICBzY2FsZV94X2Rpc2NyZXRlKGxpbWl0cyA9IGMoXCJtb250aFwiLCBcInN0b3JlXCIpLCBleHBhbmQgPSBjKC4wNSwgLjA1KSkgK1xuICBzY2FsZV9maWxsX2JyZXdlcih0eXBlID0gXCJxdWFsXCIsIHBhbGV0dGUgPSBcIlNldDFcIikgK1xuICBnZ3RpdGxlKFwiVUMgQmVya2VsZXkgYWRtaXNzaW9ucyBhbmQgcmVqZWN0aW9ucywgYnkgc2V4IGFuZCBkZXBhcnRtZW50XCIpICtcbiAgdGhlbWVfY2xhc3NpYygpXG5gYGAifQ== -->
+<pre class="r"><code>library(ggplot2) 
+library(ggalluvial)
+
+ggplot(dat,
+       aes(y = month_total, axis1 = month, axis2 = store)) +
+  geom_alluvium(aes(fill = store), width = 1/12) +
+  geom_stratum(width = 1/12, fill = &quot;black&quot;, color = &quot;grey&quot;) +
+  geom_label(stat = &quot;stratum&quot;, label.strata = TRUE) +
+  scale_x_discrete(limits = c(&quot;month&quot;, &quot;store&quot;), expand = c(.05, .05)) +
+  scale_fill_brewer(type = &quot;qual&quot;, palette = &quot;Set1&quot;) +
+  ggtitle(&quot;UC Berkeley admissions and rejections, by sex and department&quot;) +
+  theme_classic()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShuZXR3b3JrRDMpXG5saWJyYXJ5KGRwbHlyKVxuIFxuIyBGcm9tIHRoZXNlIGZsb3dzIHdlIG5lZWQgdG8gY3JlYXRlIGEgbm9kZSBkYXRhIGZyYW1lOiBpdCBsaXN0cyBldmVyeSBlbnRpdGllcyBpbnZvbHZlZCBpbiB0aGUgZmxvd1xubm9kZXMgPC0gZGF0YS5mcmFtZShcbiAgbmFtZT1jKGFzLmNoYXJhY3RlcihkYXQkbW9udGgpLCBcbiAgYXMuY2hhcmFjdGVyKGRhdCRzdG9yZSkpICU+JSB1bmlxdWUoKVxuKVxuIFxuIyBXaXRoIG5ldHdvcmtEMywgY29ubmVjdGlvbiBtdXN0IGJlIHByb3ZpZGVkIHVzaW5nIGlkLCBub3QgdXNpbmcgcmVhbCBuYW1lIGxpa2UgaW4gdGhlIGxpbmtzIGRhdGFmcmFtZS4uIFNvIHdlIG5lZWQgdG8gcmVmb3JtYXQgaXQuXG5kYXQkSURzb3VyY2UgPC0gbWF0Y2goZGF0JG1vbnRoLCBub2RlcyRuYW1lKS0xIFxuZGF0JElEdGFyZ2V0IDwtIG1hdGNoKGRhdCRzdG9yZSwgbm9kZXMkbmFtZSktMVxuXG4jIE1ha2UgdGhlIE5ldHdvcmtcbnAgPC0gc2Fua2V5TmV0d29yayhMaW5rcyA9IGRhdCwgTm9kZXMgPSBub2RlcyxcbiAgICAgICAgICAgICAgU291cmNlID0gXCJJRHNvdXJjZVwiLCBUYXJnZXQgPSBcIklEdGFyZ2V0XCIsXG4gICAgICAgICAgICAgIFZhbHVlID0gXCJtb250aF90b3RhbFwiLCBOb2RlSUQgPSBcIm5hbWVcIiwgXG4gICAgICAgICAgICAgIHNpbmtzUmlnaHQ9RkFMU0UpXG5gYGAifQ== -->
+<pre class="r"><code>library(networkD3)
+library(dplyr)
+ 
+# From these flows we need to create a node data frame: it lists every entities involved in the flow
+nodes &lt;- data.frame(
+  name=c(as.character(dat$month), 
+  as.character(dat$store)) %&gt;% unique()
+)
+ 
+# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
+dat$IDsource &lt;- match(dat$month, nodes$name)-1 
+dat$IDtarget &lt;- match(dat$store, nodes$name)-1
+
+# Make the Network
+p &lt;- sankeyNetwork(Links = dat, Nodes = nodes,
+              Source = &quot;IDsource&quot;, Target = &quot;IDtarget&quot;,
+              Value = &quot;month_total&quot;, NodeID = &quot;name&quot;, 
+              sinksRight=FALSE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5wXG5gYGAifQ== -->
+<pre class="r"><code>
+p</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBXZSB3aWxsIGZhY2V0IGJ5IHllYXIgfiBtb250aCwgYW5kIGVhY2ggc3ViZ3JhcGggd2lsbFxuIyBzaG93IHdlZWstb2YtbW9udGggdmVyc3VzIHdlZWtkYXlcbiMgdGhlIHllYXIgaXMgc2ltcGxlXG5kYXQkeWVhciA8LSBhcy5udW1lcmljKGFzLlBPU0lYbHQoZGF0JGRhdGUpJHllYXIrMTkwMClcblxuIyB0aGUgbW9udGggdG9vIFxuZGF0JG1vbnRoIDwtIGFzLm51bWVyaWMoYXMuUE9TSVhsdChkYXQkZGF0ZSkkbW9uKzEpXG5cbiMgYnV0IHR1cm4gbW9udGhzIGludG8gb3JkZXJlZCBmYWNvcnMgdG8gY29udHJvbCB0aGUgYXBwZWFyYW5jZS9vcmRlcmluZyBpbiB0aGUgcHJlc2VudGF0aW9uXG5kYXQkbW9udGhmPC1mYWN0b3IoZGF0JG1vbnRoLFxuICAgICAgICAgICAgICAgICAgIGxldmVscz1hcy5jaGFyYWN0ZXIoMToxMiksXG4gICAgICAgICAgICAgICAgICAgbGFiZWxzPWMoXCJKYW5cIixcIkZlYlwiLFwiTWFyXCIsXCJBcHJcIixcIk1heVwiLFwiSnVuXCIsXCJKdWxcIixcIkF1Z1wiLFwiU2VwXCIsXCJPY3RcIixcIk5vdlwiLFwiRGVjXCIpLFxuICAgICAgICAgICAgICAgICAgIG9yZGVyZWQ9VFJVRSlcblxuIyB0aGUgZGF5IG9mIHdlZWsgaXMgYWdhaW4gZWFzaWx5IGZvdW5kXG5kYXQkd2Vla2RheSA9IGFzLlBPU0lYbHQoZGF0JGRhdGUpJHdkYXlcblxuIyBJIHVzZSB0aGUgcmV2ZXJzZSBmdW5jdGlvbiByZXYgaGVyZSB0byBvcmRlciB0aGUgd2VlayB0b3AgZG93biBpbiB0aGUgZ3JhcGhcbmRhdCR3ZWVrZGF5ZjwtZmFjdG9yKGRhdCR3ZWVrZGF5LFxuICAgICAgICAgICAgICAgICAgICAgbGV2ZWxzPXJldihjKDEsIDIsIDMsIDQsIDUsIDYsIDApKSwgXG4gICAgICAgICAgICAgICAgICAgICBsYWJlbHM9cmV2KGMoXCJNb25cIixcIlR1ZVwiLFwiV2VkXCIsXCJUaHVcIixcIkZyaVwiLFwiU2F0XCIsIFwiU3VuXCIpKSwgXG4gICAgICAgICAgICAgICAgICAgICBvcmRlcmVkPVRSVUUpXG5cbiMgZmlyc3QgYSBmYWN0b3Igd2hpY2ggY3V0cyB0aGUgZGF0YSBpbnRvIG1vbnRoIGNodW5rc1xuZGF0JHllYXJtb250aDwtYXMueWVhcm1vbihkYXQkZGF0ZSlcblxuZGF0JHllYXJtb250aGY8LWZhY3RvcihkYXQkeWVhcm1vbnRoKVxuXG4jIHRoZW4gZmluZCB0aGUgXCJ3ZWVrIG9mIHllYXJcIiBmb3IgZWFjaCBkYXlcbmRhdCR3ZWVrIDwtIGFzLm51bWVyaWMoZm9ybWF0KGRhdCRkYXRlLFwiJVdcIikpXG5cbiMgYW5kIG5vdyBmb3IgZWFjaCBtb250aGJsb2NrIHdlIG5vcm1hbGl6ZSB0aGUgd2VlayB0byBzdGFydCBhdCAxIFxuZGF0IDwtIGRkcGx5KGRhdCwgXG4gICAgICAgICAgIC4oeWVhcm1vbnRoZiksIFxuICAgICAgICAgICB0cmFuc2Zvcm0sIFxuICAgICAgICAgICBtb250aHdlZWs9MSt3ZWVrLW1pbih3ZWVrKSlcblxuaGVhZChkYXQsIDQwKVxuYGBgIn0= -->
+<pre class="r"><code># We will facet by year ~ month, and each subgraph will
+# show week-of-month versus weekday
+# the year is simple
+dat$year &lt;- as.numeric(as.POSIXlt(dat$date)$year+1900)
+
+# the month too 
+dat$month &lt;- as.numeric(as.POSIXlt(dat$date)$mon+1)
+
+# but turn months into ordered facors to control the appearance/ordering in the presentation
+dat$monthf&lt;-factor(dat$month,
+                   levels=as.character(1:12),
+                   labels=c(&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;,&quot;Sep&quot;,&quot;Oct&quot;,&quot;Nov&quot;,&quot;Dec&quot;),
+                   ordered=TRUE)
+
+# the day of week is again easily found
+dat$weekday = as.POSIXlt(dat$date)$wday
+
+# I use the reverse function rev here to order the week top down in the graph
+dat$weekdayf&lt;-factor(dat$weekday,
+                     levels=rev(c(1, 2, 3, 4, 5, 6, 0)), 
+                     labels=rev(c(&quot;Mon&quot;,&quot;Tue&quot;,&quot;Wed&quot;,&quot;Thu&quot;,&quot;Fri&quot;,&quot;Sat&quot;, &quot;Sun&quot;)), 
+                     ordered=TRUE)
+
+# first a factor which cuts the data into month chunks
+dat$yearmonth&lt;-as.yearmon(dat$date)
+
+dat$yearmonthf&lt;-factor(dat$yearmonth)
+
+# then find the &quot;week of year&quot; for each day
+dat$week &lt;- as.numeric(format(dat$date,&quot;%W&quot;))
+
+# and now for each monthblock we normalize the week to start at 1 
+dat &lt;- ddply(dat, 
+           .(yearmonthf), 
+           transform, 
+           monthweek=1+week-min(week))
+
+head(dat, 40)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgUGxvdFxuZ2dwbG90bHkoZ2dwbG90KGRhdCwgYWVzKG1vbnRod2Vlaywgd2Vla2RheWYsIGZpbGwgPSBkYXRlX3RvdGFsKSkgKyBcbiAgICAgICAgICAgZ2VvbV90aWxlKGNvbG91ciA9IFwid2hpdGVcIikgKyBmYWNldF9ncmlkKHllYXJ+bW9udGhmKSArIHNjYWxlX2ZpbGxfZ3JhZGllbnQobG93PVwieWVsbG93XCIsIGhpZ2g9XCJyZWRcIikgK1xuICAgICAgICAgICB4bGFiKFwiXFxuXFxuV2VlayBvZiBNb250aFwiKSArIHlsYWIoXCJcIikgICsgdGhlbWVfY2xhc3NpYygpICsgc2NhbGVfeF9jb250aW51b3VzKGJyZWFrcyA9IHNlcSgxLCA1LCAxKSkgK1xuICAgICAgICAgICBndWlkZXMoZmlsbD1ndWlkZV9sZWdlbmQodGl0bGU9XCIoJClcIikpKSBcbmBgYCJ9 -->
+<pre class="r"><code>## Plot
+ggplotly(ggplot(dat, aes(monthweek, weekdayf, fill = date_total)) + 
+           geom_tile(colour = &quot;white&quot;) + facet_grid(year~monthf) + scale_fill_gradient(low=&quot;yellow&quot;, high=&quot;red&quot;) +
+           xlab(&quot;\n\nWeek of Month&quot;) + ylab(&quot;&quot;)  + theme_classic() + scale_x_continuous(breaks = seq(1, 5, 1)) +
+           guides(fill=guide_legend(title=&quot;($)&quot;))) </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHVyX2hpc3QgJT4lIFxuICAgICAgICBncm91cF9ieShzdG9yZSkgJT4lXG4gICAgICAgIHN1bW1hcmlzZShkYXRlX3RvdGFsPXN1bSh0b3RhbHByaWNlKSlcbmBgYCJ9 -->
+<pre class="r"><code>pur_hist %&gt;% 
+        group_by(store) %&gt;%
+        summarise(date_total=sum(totalprice))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KbGlicmFyeShSUG9zdGdyZXMpCmxpYnJhcnkoREJJKQpsaWJyYXJ5KGtuaXRyKQpsaWJyYXJ5KGh0dHIpCmxpYnJhcnkoUkN1cmwpCmxpYnJhcnkoeG1sMikKbGlicmFyeShqc29ubGl0ZSkKbGlicmFyeSh0aWR5cikKbGlicmFyeShEVCkKbGlicmFyeShEVGVkaXQpCmxpYnJhcnkobWFncml0dHIpCmxpYnJhcnkoc2hpbnlqcykKbGlicmFyeShWOCkKbGlicmFyeShwbHlyKQpsaWJyYXJ5KGRwbHlyKQoKCiNsaW5rIDwtICdodHRwczovL2kuaWJiLmNvL3NGNzBwejYvaG1hcnQuanBnJwojbGluayA8LSAiaHR0cHM6Ly9pLmliYi5jby9KQnpDbVFTL0lsSHQyWEYuanBnIgoKbGluayA8LSAiaHR0cHM6Ly9pLmliYi5jby9iRnFnS243L2xvYmxhd3M0LmpwZyIKCgpyZXMgPC0KICBHRVQoCiAgICBzcHJpbnRmKAogICAgICAiaHR0cHM6Ly9hcGkub2NyLnNwYWNlL3BhcnNlL2ltYWdldXJsP2FwaWtleT0yZjQyMGY1MTNiODg5NTcmdXJsPSVzJmlzVGFibGU9dHJ1ZSZPQ1JFbmdpbmU9MiIsCiAgICAgIGxpbmsKICAgICkKICApCgpyZXNfdGV4dCA8LSBjb250ZW50KHJlcywgInRleHQiKQoKcmVzX2pzb24gPC0gZnJvbUpTT04ocmVzX3RleHQsIGZsYXR0ZW4gPSBUUlVFKQoKdiA8LSByZXNfanNvbiRQYXJzZWRSZXN1bHRzWydQYXJzZWRUZXh0J10kUGFyc2VkVGV4dAogCmsgPC0gbGlzdCgpCgppIDwtIDEKCmZvciAociBpbiBzdHJzcGxpdCh2LCAnXHRcclxuJykpIHsKICAgIHByaW50KHN0cnNwbGl0KHIsICdcdCcpKQogICAga1tbaV1dIDwtIHN0cnNwbGl0KHIsICdcdCcpCiAgICBpIDwtIGkgKyAxCiAgfQoKeiA8LSBhcy5kYXRhLmZyYW1lKGRvLmNhbGwocmJpbmQsIGtbWzFdXSkpCgpgYGAKCmBgYHtyfQp6IDwtIHpbc2VxKDEsIG5yb3coeiksIDIpICxdCgp6IDwtIGFzLmRhdGEuZnJhbWUoeikKCnoKYGBgCgpgYGB7cn0KaWYgKGRpbSh6KVsyXSAhPSAyKSB7CiAgeiA8LSBzZXBhcmF0ZSgKICBkYXRhID0geiwKICBjb2wgPSAneicsCiAgaW50byA9IGMoIkl0ZW0iLCAiVW5pdFByaWNlIiksCiAgc2VwID0gIiAiKQp9Cgp6CmBgYAoKYGBge3J9CgoKegpgYGAKCmBgYHtyfQp6IDwtIHNlcGFyYXRlKAogIGRhdGEgPSB6LAogIGNvbCA9ICdWMScsCiAgaW50byA9IGMoIkl0ZW0iLCAiVW5pdFByaWNlIiksCiAgc2VwID0gIiBAIgopCgp6CmBgYAoKYGBge3J9CmNvbG5hbWVzKHopIDwtCiAgYygiSXRlbSIsICJVbml0UHJpY2UiLCAiVG90YWxQcmljZSIpCmBgYAoKYGBge3J9CmxpYnJhcnkoc3RyaW5ncikKCmxpbmsgPC0gImh0dHBzOi8vaS5pYmIuY28vYkZxZ0tuNy9sb2JsYXdzNC5qcGciCgpyZXMgPC0KICBHRVQoCiAgICBzcHJpbnRmKAogICAgICAiaHR0cHM6Ly9hcGkub2NyLnNwYWNlL3BhcnNlL2ltYWdldXJsP2FwaWtleT0yZjQyMGY1MTNiODg5NTcmdXJsPSVzJmlzVGFibGU9dHJ1ZSZPQ1JFbmdpbmU9MiIsCiAgICAgIGxpbmsKICAgICkKICApCgpyZXNfdGV4dCA8LSBjb250ZW50KHJlcywgInRleHQiKQoKcmVzX2pzb24gPC0gZnJvbUpTT04ocmVzX3RleHQsIGZsYXR0ZW4gPSBUUlVFKQoKdiA8LSByZXNfanNvbiRQYXJzZWRSZXN1bHRzWydQYXJzZWRUZXh0J10kUGFyc2VkVGV4dAogCgoKcHJpbnQodikKCmBgYAogICAKYGBge3J9ICAKayA8LSBsaXN0KCkKCmkgPC0gMQoKZm9yIChyIGluIHN0cnNwbGl0KHYsICdcdFxyXG4nKVtbMV1dKSB7CiAgICBpZiAoKGxlbmd0aChzdHJzcGxpdChyLCAnXHQnKVtbMV1dKSA9PSAxKSAmIChzdHJfZGV0ZWN0KHN0cnNwbGl0KHIsICdcdCcpW1sxXV0sICIoXFxkKy1bQS1aXSlcXHcrLiIpPT1GQUxTRSkpIHsKICAgICAgIHByaW50KHN0cnNwbGl0KHIsICdcdCcpW1sxXV0pCiAgICAgICBrW1tpXV0gPC0gc3Ryc3BsaXQociwgJ1x0JylbWzFdXQogICAgICBpIDwtIGkgKyAxCiAgICB9IGVsc2UgaWYgKGxlbmd0aChzdHJzcGxpdChyLCAnXHQnKVtbMV1dKSA+IDEpIHsKICAgICAgcHJpbnQoc3Ryc3BsaXQociwgJ1x0JylbWzFdXSkKICAgICAga1tbaV1dIDwtIHN0cnNwbGl0KHIsICdcdCcpW1sxXV0KICAgICAgaSA8LSBpICsgMQogICAgfQoKICB9CmBgYAoKYGBge3J9CnByaW50KGspCmBgYAoKYGBge3J9CmxpYnJhcnkoUlBvc3RncmVzKQpsaWJyYXJ5KERCSSkKCmNvbiA8LSBkYkNvbm5lY3QoCiAgUG9zdGdyZXMoKSwKICBkYm5hbWUgPSAiZDJzamRpaDh0ZWdjdWMiLAogIGhvc3QgPSAiZWMyLTE4NC03Mi0yMzgtMjIuY29tcHV0ZS0xLmFtYXpvbmF3cy5jb20iLAogIHBvcnQgPSAnNTQzMicsCiAgdXNlciA9ICJ4a2t0eXBzenZpc29nYyIsCiAgcGFzc3dvcmQgPSAiMzViN2ViNjdjYWI2ZWExNzUwZTU4NzdkNjFjMzQxNTg1MWQ2ZjFjYTljNTc4MmVjMGI2YmY5MWVkZThhY2JlYSIsCiAgc3NsbW9kZSA9ICdyZXF1aXJlJwopCgojIGRmID0gZGF0YS5mcmFtZSgiaXRlbSIgPSBjaGFyYWN0ZXIoMSksCiMgICAgICAgICAgICAgICAgICJ1bml0cHJpY2UiPSBkb3VibGUoMSksCiMgICAgICAgICAgICAgICAgICJ0b3RhbHByaWNlIj0gZG91YmxlKDEpLAojICAgICAgICAgICAgICAgICAiZGF0ZSIgPSBTeXMuRGF0ZSgpLAojICAgICAgICAgICAgICAgICAic3RvcmUiID0gY2hhcmFjdGVyKDEpLAojICAgICAgICAgICAgICAgICBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpCgojIyNkYldyaXRlVGFibGUoY29uLCAiZ3JvY2VyeSIsIGRmLCBvdmVyd3JpdGU9RkFMU0UpCmBgYAoKYGBge3J9CnF1ZXJ5IDwtICJVUERBVEUgZ3JvY2VyeQogICAgICAgICAgU0VUIHN0b3JlPSdILU1hcnQnCiAgICAgICAgICBXSEVSRSBzdG9yZT0nSCBNYXJ0JyIKCmRiU2VuZFN0YXRlbWVudChjb24sIHF1ZXJ5KQpgYGAKCmBgYHtyfQpsaWJyYXJ5KHF1YW50bW9kKQpsaWJyYXJ5KGdncGxvdDIpCmxpYnJhcnkoem9vKQpsaWJyYXJ5KHBsb3RseSkKbGlicmFyeShSUG9zdGdyZXMpCmxpYnJhcnkoREJJKQoKY29uIDwtIGRiQ29ubmVjdCgKICAgIFBvc3RncmVzKCksCiAgICBkYm5hbWUgPSAiZDJzamRpaDh0ZWdjdWMiLAogICAgaG9zdCA9ICJlYzItMTg0LTcyLTIzOC0yMi5jb21wdXRlLTEuYW1hem9uYXdzLmNvbSIsCiAgICBwb3J0ID0gJzU0MzInLAogICAgdXNlciA9ICJ4a2t0eXBzenZpc29nYyIsCiAgICBwYXNzd29yZCA9ICIzNWI3ZWI2N2NhYjZlYTE3NTBlNTg3N2Q2MWMzNDE1ODUxZDZmMWNhOWM1NzgyZWMwYjZiZjkxZWRlOGFjYmVhIiwKICAgIHNzbG1vZGUgPSAncmVxdWlyZScKICApCgojIyBBZ2dyZWdhdGUgYnkgZGF0ZQpwdXJfaGlzdCA8LSBkYkdldFF1ZXJ5KGNvbiwgIlNFTEVDVCAqIEZST00gZ3JvY2VyeSIpCgp3cml0ZS5jc3YocHVyX2hpc3QsICcuL3B1cmNoYXNlX2hpc3RvcnkuY3N2JykKYGBgICAgICAgCmNvbG5hbWVzKHB1cl9oaXN0KSA8LSBjKCJpdGVtIiwgInVuaXRwcmljZSIsICJ0b3RhbHByaWNlIiwgImRhdGUiLCAic3RvcmUiKQoKcHVyX2hpc3QgPC0gIHB1cl9oaXN0WyEoaXMubmEocHVyX2hpc3QkaXRlbSkgfCBwdXJfaGlzdCRpdGVtPT0iIiksIF0KCnB1cl9oaXN0IDwtIHB1cl9oaXN0ICU+JQogIGNvbXBsZXRlKGRhdGUgPSBzZXEuRGF0ZShhcy5EYXRlKCIyMDE5LTA4LTAxIiksIG1heChkYXRlKSwgYnk9ImRheSIpKQoKZGF0JG1vbnRoX3RvdGFsW2lzLm5hKGRhdCRtb250aF90b3RhbCldIDwtIDAKCnB1cl9oaXN0IDwtIHB1cl9oaXN0ICU+JQogICAgICAgICAgc2VwYXJhdGUoJ2RhdGUnLCBzZXA9Ii0iLCBpbnRvID0gYygieWVhciIsICJtb250aCIsICJkYXkiKSkKICAgICAgCmRhdCA8LSBwdXJfaGlzdCAlPiUgCiAgICAgICAgZ3JvdXBfYnkoc3RvcmUsIG1vbnRoKSAlPiUKICAgICAgICBzdW1tYXJpc2UobW9udGhfdG90YWw9c3VtKHRvdGFscHJpY2UpKQoKCgpkYXQKYGBgCgpgYGB7cn0KbGlicmFyeShhbGx1dmlhbCkKCmRhdCA8LSBkYXRbY29tcGxldGUuY2FzZXMoZGF0KSwgXQoKYWxsdXZpYWwoZGF0WywxOjJdLCBmcmVxPWRhdCRtb250aF90b3RhbCwKICAgICAgICAgY2V4ID0gMC43CikKYGBgCgpgYGB7cn0KbGlicmFyeShnZ3Bsb3QyKSAKbGlicmFyeShnZ2FsbHV2aWFsKQoKZ2dwbG90KGRhdCwKICAgICAgIGFlcyh5ID0gbW9udGhfdG90YWwsIGF4aXMxID0gbW9udGgsIGF4aXMyID0gc3RvcmUpKSArCiAgZ2VvbV9hbGx1dml1bShhZXMoZmlsbCA9IHN0b3JlKSwgd2lkdGggPSAxLzEyKSArCiAgZ2VvbV9zdHJhdHVtKHdpZHRoID0gMS8xMiwgZmlsbCA9ICJibGFjayIsIGNvbG9yID0gImdyZXkiKSArCiAgZ2VvbV9sYWJlbChzdGF0ID0gInN0cmF0dW0iLCBsYWJlbC5zdHJhdGEgPSBUUlVFKSArCiAgc2NhbGVfeF9kaXNjcmV0ZShsaW1pdHMgPSBjKCJtb250aCIsICJzdG9yZSIpLCBleHBhbmQgPSBjKC4wNSwgLjA1KSkgKwogIHNjYWxlX2ZpbGxfYnJld2VyKHR5cGUgPSAicXVhbCIsIHBhbGV0dGUgPSAiU2V0MSIpICsKICBnZ3RpdGxlKCJVQyBCZXJrZWxleSBhZG1pc3Npb25zIGFuZCByZWplY3Rpb25zLCBieSBzZXggYW5kIGRlcGFydG1lbnQiKSArCiAgdGhlbWVfY2xhc3NpYygpCmBgYAoKYGBge3J9CmxpYnJhcnkobmV0d29ya0QzKQpsaWJyYXJ5KGRwbHlyKQogCiMgRnJvbSB0aGVzZSBmbG93cyB3ZSBuZWVkIHRvIGNyZWF0ZSBhIG5vZGUgZGF0YSBmcmFtZTogaXQgbGlzdHMgZXZlcnkgZW50aXRpZXMgaW52b2x2ZWQgaW4gdGhlIGZsb3cKbm9kZXMgPC0gZGF0YS5mcmFtZSgKICBuYW1lPWMoYXMuY2hhcmFjdGVyKGRhdCRtb250aCksIAogIGFzLmNoYXJhY3RlcihkYXQkc3RvcmUpKSAlPiUgdW5pcXVlKCkKKQogCiMgV2l0aCBuZXR3b3JrRDMsIGNvbm5lY3Rpb24gbXVzdCBiZSBwcm92aWRlZCB1c2luZyBpZCwgbm90IHVzaW5nIHJlYWwgbmFtZSBsaWtlIGluIHRoZSBsaW5rcyBkYXRhZnJhbWUuLiBTbyB3ZSBuZWVkIHRvIHJlZm9ybWF0IGl0LgpkYXQkSURzb3VyY2UgPC0gbWF0Y2goZGF0JG1vbnRoLCBub2RlcyRuYW1lKS0xIApkYXQkSUR0YXJnZXQgPC0gbWF0Y2goZGF0JHN0b3JlLCBub2RlcyRuYW1lKS0xCgojIE1ha2UgdGhlIE5ldHdvcmsKcCA8LSBzYW5rZXlOZXR3b3JrKExpbmtzID0gZGF0LCBOb2RlcyA9IG5vZGVzLAogICAgICAgICAgICAgIFNvdXJjZSA9ICJJRHNvdXJjZSIsIFRhcmdldCA9ICJJRHRhcmdldCIsCiAgICAgICAgICAgICAgVmFsdWUgPSAibW9udGhfdG90YWwiLCBOb2RlSUQgPSAibmFtZSIsIAogICAgICAgICAgICAgIHNpbmtzUmlnaHQ9RkFMU0UpCmBgYAoKCmBgYHtyfSAKCnAKYGBgCgoKCgoKCgoKCmBgYHtyfQojIFdlIHdpbGwgZmFjZXQgYnkgeWVhciB+IG1vbnRoLCBhbmQgZWFjaCBzdWJncmFwaCB3aWxsCiMgc2hvdyB3ZWVrLW9mLW1vbnRoIHZlcnN1cyB3ZWVrZGF5CiMgdGhlIHllYXIgaXMgc2ltcGxlCmRhdCR5ZWFyIDwtIGFzLm51bWVyaWMoYXMuUE9TSVhsdChkYXQkZGF0ZSkkeWVhcisxOTAwKQoKIyB0aGUgbW9udGggdG9vIApkYXQkbW9udGggPC0gYXMubnVtZXJpYyhhcy5QT1NJWGx0KGRhdCRkYXRlKSRtb24rMSkKCiMgYnV0IHR1cm4gbW9udGhzIGludG8gb3JkZXJlZCBmYWNvcnMgdG8gY29udHJvbCB0aGUgYXBwZWFyYW5jZS9vcmRlcmluZyBpbiB0aGUgcHJlc2VudGF0aW9uCmRhdCRtb250aGY8LWZhY3RvcihkYXQkbW9udGgsCiAgICAgICAgICAgICAgICAgICBsZXZlbHM9YXMuY2hhcmFjdGVyKDE6MTIpLAogICAgICAgICAgICAgICAgICAgbGFiZWxzPWMoIkphbiIsIkZlYiIsIk1hciIsIkFwciIsIk1heSIsIkp1biIsIkp1bCIsIkF1ZyIsIlNlcCIsIk9jdCIsIk5vdiIsIkRlYyIpLAogICAgICAgICAgICAgICAgICAgb3JkZXJlZD1UUlVFKQoKIyB0aGUgZGF5IG9mIHdlZWsgaXMgYWdhaW4gZWFzaWx5IGZvdW5kCmRhdCR3ZWVrZGF5ID0gYXMuUE9TSVhsdChkYXQkZGF0ZSkkd2RheQoKIyBJIHVzZSB0aGUgcmV2ZXJzZSBmdW5jdGlvbiByZXYgaGVyZSB0byBvcmRlciB0aGUgd2VlayB0b3AgZG93biBpbiB0aGUgZ3JhcGgKZGF0JHdlZWtkYXlmPC1mYWN0b3IoZGF0JHdlZWtkYXksCiAgICAgICAgICAgICAgICAgICAgIGxldmVscz1yZXYoYygxLCAyLCAzLCA0LCA1LCA2LCAwKSksIAogICAgICAgICAgICAgICAgICAgICBsYWJlbHM9cmV2KGMoIk1vbiIsIlR1ZSIsIldlZCIsIlRodSIsIkZyaSIsIlNhdCIsICJTdW4iKSksIAogICAgICAgICAgICAgICAgICAgICBvcmRlcmVkPVRSVUUpCgojIGZpcnN0IGEgZmFjdG9yIHdoaWNoIGN1dHMgdGhlIGRhdGEgaW50byBtb250aCBjaHVua3MKZGF0JHllYXJtb250aDwtYXMueWVhcm1vbihkYXQkZGF0ZSkKCmRhdCR5ZWFybW9udGhmPC1mYWN0b3IoZGF0JHllYXJtb250aCkKCiMgdGhlbiBmaW5kIHRoZSAid2VlayBvZiB5ZWFyIiBmb3IgZWFjaCBkYXkKZGF0JHdlZWsgPC0gYXMubnVtZXJpYyhmb3JtYXQoZGF0JGRhdGUsIiVXIikpCgojIGFuZCBub3cgZm9yIGVhY2ggbW9udGhibG9jayB3ZSBub3JtYWxpemUgdGhlIHdlZWsgdG8gc3RhcnQgYXQgMSAKZGF0IDwtIGRkcGx5KGRhdCwgCiAgICAgICAgICAgLih5ZWFybW9udGhmKSwgCiAgICAgICAgICAgdHJhbnNmb3JtLCAKICAgICAgICAgICBtb250aHdlZWs9MSt3ZWVrLW1pbih3ZWVrKSkKCmhlYWQoZGF0LCA0MCkKYGBgCgoKYGBge3J9CiMjIFBsb3QKZ2dwbG90bHkoZ2dwbG90KGRhdCwgYWVzKG1vbnRod2Vlaywgd2Vla2RheWYsIGZpbGwgPSBkYXRlX3RvdGFsKSkgKyAKICAgICAgICAgICBnZW9tX3RpbGUoY29sb3VyID0gIndoaXRlIikgKyBmYWNldF9ncmlkKHllYXJ+bW9udGhmKSArIHNjYWxlX2ZpbGxfZ3JhZGllbnQobG93PSJ5ZWxsb3ciLCBoaWdoPSJyZWQiKSArCiAgICAgICAgICAgeGxhYigiXG5cbldlZWsgb2YgTW9udGgiKSArIHlsYWIoIiIpICArIHRoZW1lX2NsYXNzaWMoKSArIHNjYWxlX3hfY29udGludW91cyhicmVha3MgPSBzZXEoMSwgNSwgMSkpICsKICAgICAgICAgICBndWlkZXMoZmlsbD1ndWlkZV9sZWdlbmQodGl0bGU9IigkKSIpKSkgCmBgYAoKCmBgYHtyfQpwdXJfaGlzdCAlPiUgCiAgICAgICAgZ3JvdXBfYnkoc3RvcmUpICU+JQogICAgICAgIHN1bW1hcmlzZShkYXRlX3RvdGFsPXN1bSh0b3RhbHByaWNlKSkKYGBg</div>
 
 
 

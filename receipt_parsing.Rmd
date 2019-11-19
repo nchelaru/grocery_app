@@ -25,7 +25,11 @@ library(plyr)
 library(dplyr)
 
 
-link <- 'https://i.ibb.co/h1Ft9q1/IMG-0063.jpg'
+#link <- 'https://i.ibb.co/sF70pz6/hmart.jpg'
+#link <- "https://i.ibb.co/JBzCmQS/IlHt2XF.jpg"
+
+link <- "https://i.ibb.co/bFqgKn7/loblaws4.jpg"
+
 
 res <-
   GET(
@@ -40,36 +44,103 @@ res_text <- content(res, "text")
 res_json <- fromJSON(res_text, flatten = TRUE)
 
 v <- res_json$ParsedResults['ParsedText']$ParsedText
+ 
+k <- list()
+
+i <- 1
+
+for (r in strsplit(v, '\t\r\n')) {
+    print(strsplit(r, '\t'))
+    k[[i]] <- strsplit(r, '\t')
+    i <- i + 1
+  }
+
+z <- as.data.frame(do.call(rbind, k[[1]]))
+
 ```
 
 ```{r}
-k[[1]]
+z <- z[seq(1, nrow(z), 2) ,]
+
+z <- as.data.frame(z)
+
+z
+```
+
+```{r}
+if (dim(z)[2] != 2) {
+  z <- separate(
+  data = z,
+  col = 'z',
+  into = c("Item", "UnitPrice"),
+  sep = " ")
+}
+
+z
+```
+
+```{r}
+
+
+z
+```
+
+```{r}
+z <- separate(
+  data = z,
+  col = 'V1',
+  into = c("Item", "UnitPrice"),
+  sep = " @"
+)
+
+z
+```
+
+```{r}
+colnames(z) <-
+  c("Item", "UnitPrice", "TotalPrice")
 ```
 
 ```{r}
 library(stringr)
 
+link <- "https://i.ibb.co/bFqgKn7/loblaws4.jpg"
+
+res <-
+  GET(
+    sprintf(
+      "https://api.ocr.space/parse/imageurl?apikey=2f420f513b88957&url=%s&isTable=true&OCREngine=2",
+      link
+    )
+  )
+
+res_text <- content(res, "text")
+
+res_json <- fromJSON(res_text, flatten = TRUE)
+
+v <- res_json$ParsedResults['ParsedText']$ParsedText
+ 
+
+
+print(v)
+
+```
+   
+```{r}  
 k <- list()
-    
+
 i <- 1
-    
+
 for (r in strsplit(v, '\t\r\n')[[1]]) {
-    print(strsplit(r, '\t')[[1]])
-  
     if ((length(strsplit(r, '\t')[[1]]) == 1) & (str_detect(strsplit(r, '\t')[[1]], "(\\d+-[A-Z])\\w+.")==FALSE)) {
-      k[[i]] <- strsplit(r, '\t')[[1]]
+       print(strsplit(r, '\t')[[1]])
+       k[[i]] <- strsplit(r, '\t')[[1]]
       i <- i + 1
     } else if (length(strsplit(r, '\t')[[1]]) > 1) {
+      print(strsplit(r, '\t')[[1]])
       k[[i]] <- strsplit(r, '\t')[[1]]
       i <- i + 1
     }
-  
-    print(length(strsplit(r, '\t')[[1]])) ## If length=1
-    
-    print(str_detect(strsplit(r, '\t'), "(\\d+-[A-Z])\\w+\\s\\w+"))
-    print("---")
-    #print(length(strsplit(r, '\t')[[1]]))
-
 
   }
 ```
@@ -77,9 +148,196 @@ for (r in strsplit(v, '\t\r\n')[[1]]) {
 ```{r}
 print(k)
 ```
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+```{r}
+library(RPostgres)
+library(DBI)
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+con <- dbConnect(
+  Postgres(),
+  dbname = "d2sjdih8tegcuc",
+  host = "ec2-184-72-238-22.compute-1.amazonaws.com",
+  port = '5432',
+  user = "xkktypszvisogc",
+  password = "35b7eb67cab6ea1750e5877d61c3415851d6f1ca9c5782ec0b6bf91ede8acbea",
+  sslmode = 'require'
+)
 
+# df = data.frame("item" = character(1),
+#                 "unitprice"= double(1),
+#                 "totalprice"= double(1),
+#                 "date" = Sys.Date(),
+#                 "store" = character(1),
+#                 stringsAsFactors = FALSE)
+
+###dbWriteTable(con, "grocery", df, overwrite=FALSE)
+```
+
+```{r}
+query <- "UPDATE grocery
+          SET store='H-Mart'
+          WHERE store='H Mart'"
+
+dbSendStatement(con, query)
+```
+
+```{r}
+library(quantmod)
+library(ggplot2)
+library(zoo)
+library(plotly)
+library(RPostgres)
+library(DBI)
+
+con <- dbConnect(
+    Postgres(),
+    dbname = "d2sjdih8tegcuc",
+    host = "ec2-184-72-238-22.compute-1.amazonaws.com",
+    port = '5432',
+    user = "xkktypszvisogc",
+    password = "35b7eb67cab6ea1750e5877d61c3415851d6f1ca9c5782ec0b6bf91ede8acbea",
+    sslmode = 'require'
+  )
+
+## Aggregate by date
+pur_hist <- dbGetQuery(con, "SELECT * FROM grocery")
+
+write.csv(pur_hist, './purchase_history.csv')
+```      
+colnames(pur_hist) <- c("item", "unitprice", "totalprice", "date", "store")
+
+pur_hist <-  pur_hist[!(is.na(pur_hist$item) | pur_hist$item==""), ]
+
+pur_hist <- pur_hist %>%
+  complete(date = seq.Date(as.Date("2019-08-01"), max(date), by="day"))
+
+dat$month_total[is.na(dat$month_total)] <- 0
+
+pur_hist <- pur_hist %>%
+          separate('date', sep="-", into = c("year", "month", "day"))
+      
+dat <- pur_hist %>% 
+        group_by(store, month) %>%
+        summarise(month_total=sum(totalprice))
+
+
+
+dat
+```
+
+```{r}
+library(alluvial)
+
+dat <- dat[complete.cases(dat), ]
+
+alluvial(dat[,1:2], freq=dat$month_total,
+         cex = 0.7
+)
+```
+
+```{r}
+library(ggplot2) 
+library(ggalluvial)
+
+ggplot(dat,
+       aes(y = month_total, axis1 = month, axis2 = store)) +
+  geom_alluvium(aes(fill = store), width = 1/12) +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", label.strata = TRUE) +
+  scale_x_discrete(limits = c("month", "store"), expand = c(.05, .05)) +
+  scale_fill_brewer(type = "qual", palette = "Set1") +
+  ggtitle("UC Berkeley admissions and rejections, by sex and department") +
+  theme_classic()
+```
+
+```{r}
+library(networkD3)
+library(dplyr)
+ 
+# From these flows we need to create a node data frame: it lists every entities involved in the flow
+nodes <- data.frame(
+  name=c(as.character(dat$month), 
+  as.character(dat$store)) %>% unique()
+)
+ 
+# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
+dat$IDsource <- match(dat$month, nodes$name)-1 
+dat$IDtarget <- match(dat$store, nodes$name)-1
+
+# Make the Network
+p <- sankeyNetwork(Links = dat, Nodes = nodes,
+              Source = "IDsource", Target = "IDtarget",
+              Value = "month_total", NodeID = "name", 
+              sinksRight=FALSE)
+```
+
+
+```{r} 
+
+p
+```
+
+
+
+
+
+
+
+
+
+```{r}
+# We will facet by year ~ month, and each subgraph will
+# show week-of-month versus weekday
+# the year is simple
+dat$year <- as.numeric(as.POSIXlt(dat$date)$year+1900)
+
+# the month too 
+dat$month <- as.numeric(as.POSIXlt(dat$date)$mon+1)
+
+# but turn months into ordered facors to control the appearance/ordering in the presentation
+dat$monthf<-factor(dat$month,
+                   levels=as.character(1:12),
+                   labels=c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),
+                   ordered=TRUE)
+
+# the day of week is again easily found
+dat$weekday = as.POSIXlt(dat$date)$wday
+
+# I use the reverse function rev here to order the week top down in the graph
+dat$weekdayf<-factor(dat$weekday,
+                     levels=rev(c(1, 2, 3, 4, 5, 6, 0)), 
+                     labels=rev(c("Mon","Tue","Wed","Thu","Fri","Sat", "Sun")), 
+                     ordered=TRUE)
+
+# first a factor which cuts the data into month chunks
+dat$yearmonth<-as.yearmon(dat$date)
+
+dat$yearmonthf<-factor(dat$yearmonth)
+
+# then find the "week of year" for each day
+dat$week <- as.numeric(format(dat$date,"%W"))
+
+# and now for each monthblock we normalize the week to start at 1 
+dat <- ddply(dat, 
+           .(yearmonthf), 
+           transform, 
+           monthweek=1+week-min(week))
+
+head(dat, 40)
+```
+
+
+```{r}
+## Plot
+ggplotly(ggplot(dat, aes(monthweek, weekdayf, fill = date_total)) + 
+           geom_tile(colour = "white") + facet_grid(year~monthf) + scale_fill_gradient(low="yellow", high="red") +
+           xlab("\n\nWeek of Month") + ylab("")  + theme_classic() + scale_x_continuous(breaks = seq(1, 5, 1)) +
+           guides(fill=guide_legend(title="($)"))) 
+```
+
+
+```{r}
+pur_hist %>% 
+        group_by(store) %>%
+        summarise(date_total=sum(totalprice))
+```
