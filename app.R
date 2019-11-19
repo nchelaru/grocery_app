@@ -719,7 +719,7 @@ server <- function(input, output, session) {
         pur_hist_curr_month <- pur_hist[pur_hist$month == curr_month, ]
         
         valueBox(
-          sum(pur_hist_curr_month['totalprice']),
+          value=paste0("$", sum(pur_hist_curr_month['totalprice'])),
           "Spent this month",
           icon = icon("usd", lib = "glyphicon"),
           color = "red"
@@ -737,7 +737,7 @@ server <- function(input, output, session) {
         pur_hist_last_month <- pur_hist[pur_hist$month == last_month, ]
         
         valueBox(
-          sum(pur_hist_last_month['totalprice']),
+          value=paste0("$", sum(pur_hist_last_month['totalprice'])),
           "Spent last month",
           icon = icon("time", lib = "glyphicon"),
           color = "orange"
