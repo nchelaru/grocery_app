@@ -100,7 +100,7 @@ contact_footer <- HTML('<div style="font-size:20px; margin: 0px 15px 15px 15px;"
                       </div>')
 
 iframe_test <- HTML('<iframe src="https://raindrop.io/collection/8841871" 
-                    style="border:0px #ffffff none;" name="myiFrame" scrolling="no" 
+                    style="border:0px #ffffff none;" name="myiFrame" scrolling="yes" 
                     frameborder="1" marginheight="0px" marginwidth="0px" height="750px" 
                     width="100%" allowfullscreen></iframe>')
 
@@ -355,15 +355,15 @@ body <- dashboardBody(tabItems(
                      box(
                        title = "Changelog and roadmap",
                        solidHeader = TRUE,
-                       status = 'info',
+                       status = 'warning',
                        width = 12,
                        timelineBlock(
                          timelineEnd(color = "danger"),
-                         timelineLabel('2019 November', color = "maroon"),
+                         timelineLabel('2019 November', color = "light-blue"),
                          timelineItem(
                            title = HTML("<font size='4'><b>Available store options for receipt OCR</b></font>"),
                            icon = "store",
-                           color = 'olive',
+                           color = 'maroon',
                            HTML("<font size='3'>Now you can upload receipts from <b>H-Mart</b>, <b>Loblaws</b>, 
                                 <b>Shoppers Drug Mart</b>, and <b>Whole Foods</b> in a snap!</font>"),
                            border = TRUE,
@@ -376,7 +376,7 @@ body <- dashboardBody(tabItems(
                            Visualize shopping trends using heatmap and Sankey diagram.</font>"),
                            border = TRUE,
                          ),
-                         timelineLabel('2019 October', color = "orange"),
+                         timelineLabel('2019 October', color = "fuchsia"),
                          timelineItem(
                            title = HTML("<font size='4'><b>New feature!</b></font>"),
                            icon = "keyboard",
@@ -399,11 +399,11 @@ body <- dashboardBody(tabItems(
                 flipBox(id=2, width=12,  subtitle="Creator", main_img= 'https://octodex.github.com/images/andycat.jpg',
                     header_img =  "https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350",
                     front_title = "Hi, I'm Nancy Chelaru!", back_title = NULL,
-                    front_btn_text = "Other projects at Intelligence Refinery", back_btn_text = "Back",
+                    front_btn_text = HTML("<font size='4'>Other projects at Intelligence Refinery</font>"), back_btn_text = "Back",
                     div(about_msg, 
                         contact_footer
                         ),
-                    back_content = iframe_test)
+                    back_content = div(iframe_test, style='margin:15px;'))
               
             )
           )
