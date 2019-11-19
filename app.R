@@ -65,6 +65,44 @@ appCSS <-
   "
 
 
+about_msg <- HTML('<div style="font-size:20px; margin: 0px 15px 15px 15px;"><p>
+                  <br>
+                  This little app is a fun programming exercise that combines my love for exploring the ever-expanding Shiny ecosystem
+                  with my so-uncool enthusiasm for good grocery sales. <i class="fas fa-grin-squint"></i>
+                  
+                  <br><br>
+                  
+                  This project is very much in active development, so please check back regularly to see what other neat features have been added. 
+                  If you have suggestions or questions, I would love to hear from you through any of the channels listed below.
+                  
+                  <br><br>
+                  
+                  Along with Mihai Chelaru, I am the co-curator of <a href="https://www.intelligencerefinery.io"><b>Intelligence Refinery</b></a>,
+                  a knowledge repository for all things data science and software development. We try to distill all that we learn and experience as 
+                  working data scientists into useful nuggets that can be easily referenced by our future selves and whoever else may find them helpful. 
+                  Flip to the other side of this card to find links to our other works.
+                  
+                  <br><br>
+                  
+                  Hope that you have enjoyed your time here!
+                  
+                  <br>
+                  </p></div>')
+                  
+contact_footer <- HTML('<div style="font-size:20px; margin: 0px 15px 15px 15px;">
+                      <br>
+                      <center><a href="mailto:nancy.chelaru@gmail.com"><i class="fas fa-envelope" style="padding:10px;"></i></a>
+                      <a href="https://www.intelligencerefinery.io/contact/"><i class="fas fa-globe" style="padding:10px;"></i></i></a>
+                      <a href="https://github.com/nchelaru?tab=repositories"><i class="fab fa-github-alt" style="padding:10px;"></i></a>
+                      <a href="https://twitter.com/n_chelaru"><i class="fab fa-twitter" style="padding:10px;"></i></a></center>
+    
+                      <br><hr><br><br><br>
+                      </div>')
+
+iframe_test <- HTML('<iframe src="https://raindrop.io/collection/8841871" 
+                    style="border:0px #ffffff none;" name="myiFrame" scrolling="no" 
+                    frameborder="1" marginheight="0px" marginwidth="0px" height="750px" 
+                    width="100%" allowfullscreen></iframe>')
 
 ## Define UI
 sidebar <- dashboardSidebar(
@@ -85,6 +123,11 @@ sidebar <- dashboardSidebar(
       HTML("<font size='4'>Browse sales flyers</font>"),
       tabName = 'flyers',
       icon=icon("newspaper")
+    ),
+    menuItem(
+      HTML("<font size='4'>About this app</font>"),
+      tabName = 'about',
+      icon=icon("question")
     )),
   textInput(
     "search_box",
@@ -304,8 +347,69 @@ body <- dashboardBody(tabItems(
                                    div(
                                      br(), tags$b("Error: "), span(id = "error_msg")
                                    )))))
-  )
+  ),
+  tabItem(tabName = "about",
+          fluidPage(
+            fluidRow(
+              column(width=5, 
+                     box(
+                       title = "Changelog and roadmap",
+                       solidHeader = TRUE,
+                       status = 'info',
+                       width = 12,
+                       timelineBlock(
+                         timelineEnd(color = "danger"),
+                         timelineLabel('2019 November', color = "maroon"),
+                         timelineItem(
+                           title = HTML("<font size='4'><b>Available store options for receipt OCR</b></font>"),
+                           icon = "store",
+                           color = 'olive',
+                           HTML("<font size='3'>Now you can upload receipts from <b>H-Mart</b>, <b>Loblaws</b>, 
+                                <b>Shoppers Drug Mart</b>, and <b>Whole Foods</b> in a snap!</font>"),
+                           border = TRUE,
+                         ),
+                         timelineItem(
+                           title = HTML("<font size='4'><b>More goodies!</b></font>"),
+                           icon = "chart-line",
+                           color = 'teal',
+                           HTML("<font size='3'>Now can filter grocery flyer search results by store. 
+                           Visualize shopping trends using heatmap and Sankey diagram.</font>"),
+                           border = TRUE,
+                         ),
+                         timelineLabel('2019 October', color = "orange"),
+                         timelineItem(
+                           title = HTML("<font size='4'><b>New feature!</b></font>"),
+                           icon = "keyboard",
+                           color = 'purple',
+                           HTML("<font size='3'>Add functionality to manually enter purchases and save to database.</font>"),
+                           border = TRUE,
+                         ),
+                         timelineLabel('2019 September', color = "green"),
+                         timelineItem(
+                           title = HTML("<font size='4'><b>Up and running!</b></font>"),
+                           icon = "gears",
+                           color = "maroon",
+                           HTML("<font size='3'>We are live! A fun app for browsing and searching grocery flyers in Toronto.</font>")
+                         ),
+                         timelineStart(color = "gray")
+                       )
+                     )),
+              column(
+                width=7, 
+                flipBox(id=2, width=12,  subtitle="Creator", main_img= 'https://octodex.github.com/images/andycat.jpg',
+                    header_img =  "https://images.pexels.com/photos/531880/pexels-photo-531880.jpeg?auto=compress&cs=tinysrgb&h=350",
+                    front_title = "Hi, I'm Nancy Chelaru!", back_title = NULL,
+                    front_btn_text = "Other projects at Intelligence Refinery", back_btn_text = "Back",
+                    div(about_msg, 
+                        contact_footer
+                        ),
+                    back_content = iframe_test)
+              
+            )
+          )
+          )
 ))
+)
 
 
 
