@@ -26,6 +26,8 @@ library(slickR)
 library(svglite)
 library(tippy)
 library(openair)
+library(shinyhelper)
+library(reactable)
 
 source("functions.R")
 
@@ -107,7 +109,10 @@ body <- dashboardBody(tabItems(
       tags$head(tags$style(
         type="text/css",
         "#success_img img {max-width: 100%; width: auto; height: auto}
-        #slick_slide img {max-width: 100%; width: auto; height: auto}"
+        #slick_slide img {max-width: 100%; width: auto; height: auto}
+       #modal1 .modal-content  {-webkit-border-radius: 6px !important;-moz-border-radius: 6px !important;border-radius: 6px !important;}
+       #modal1 .modal-header {background-color: #DD9AC2; border-top-left-radius: 6px; border-top-right-radius: 6px}
+        "
       )),
       fluidRow(column(5,   
         flipBox(id = 1, width = 12,
@@ -127,14 +132,18 @@ body <- dashboardBody(tabItems(
                     selectInput(
                       width='100%',
                       "store",
-                      HTML("<font size='4'>2. Select store</font>"),
-                      c("", "Bloor Street Market", "Bulk Barn", "Loblaws", "Galleria", "H-Mart", "Metro", 
-                        "Shoppers Drug Mart", "Sobeys", "T&T Supermarket", "Whole Foods")
+                      div(HTML("<font size='4'>2. Select store  </font>"), 
+                          HTML("<font size='2' color='grey'><i>(More coming soon!)</i></font>")),
+                      c("", "Loblaws", "H-Mart", 'Shoppers Drug Mart', "Whole Foods"),
+                      # c("", "Bloor Street Market", "Bulk Barn", "Loblaws", "Galleria", "H-Mart", "Metro", 
+                      #   "Shoppers Drug Mart", "Sobeys", "T&T Supermarket", "Whole Foods")
                     ),
                     fileInput(
                       width='100%',
                       "receipt",
-                      HTML("<font size='4'>3. Upload image of receipt</font>"),
+                      div(HTML("<font size='4'>3. Upload image of receipt   </font>"), 
+                          actionLink("receipt_modal", HTML("<i class='far fa-question-circle'></i>"))),
+                      HTML('<i class="fas fa-receipt"></i>'),
                       multiple = FALSE,
                       accept = c("image/jpeg", "image/png", ".jpeg", ".png", ".jpg")
                     ),
@@ -142,7 +151,7 @@ body <- dashboardBody(tabItems(
                          Edit the table as needed<br>(right click on table for more editing options)</font>"),
                     br(),
                     HTML("<br><br><font size='4'><b>5. Save to database!</b></font><br><br>"),
-                    actionButton("submit", HTML("<font size='4'>Upload receipt</font>"), class = "btn-warning"),
+                    actionButton("submit", HTML("<font size='4'>Submit</font>"), class = "btn-warning"),
                     br(), br(), hr(), br(), br(),
                     shinyjs::hidden(span(id = "submit_msg", "Submitting..."),
                                     div(id = "error",
@@ -219,12 +228,13 @@ body <- dashboardBody(tabItems(
   ),
   tabItem(tabName = "history",
           fluidPage(
-            fluidRow(valueBoxOutput("totalBox"), 
-                     valueBoxOutput("totalBox2"), 
-                     valueBoxOutput("totalBox3")),
+            fluidRow(valueBoxOutput("totalBox_thismonth"), 
+                     valueBoxOutput("totalBox_topstore"),
+                     valueBoxOutput("totalBox_lastmonth")), 
             fluidRow(tabBox(tabPanel("Detailed history", 
-                                     withSpinner(DTOutput("purchase_history"), type=2), 
-                                     style='margin:30px;'),
+                                     #withSpinner(DTOutput("purchase_history"), type=2), 
+                                     reactableOutput("purchase_history"),
+                                     style='margin: 0px 30px 0px 30px'),
                             tabPanel("Summary by date", 
                                       br(), 
                                      withSpinner(plotlyOutput('dat_heatmap', height='150%'), type=2),
@@ -332,6 +342,15 @@ server <- function(input, output, session) {
     input$search_box
   })
   
+  observeEvent(input$receipt_modal, {
+    showModal(tags$div(id="modal1", modalDialog(
+      easyClose = TRUE,
+      title = HTML("<h3>A friend reminder!  <i class='fas fa-smile-beam'></i></h3>"),
+      HTML("<h4>Please crop the image around <b>only</b> the purchased items before uploading:</h4><br>"),
+      HTML("<center><img src='receipt_example.jpg' height=400px></center>")
+    )))
+    
+  })
 
   
   ## Parse OCR results
@@ -626,15 +645,72 @@ server <- function(input, output, session) {
       
       colnames(pur_hist) <- c("item", "unitprice", "totalprice", "date", "store")
       
+      pur_hist <- pur_hist[c("date", 'item', 'store', 'unitprice', 'totalprice')]
+      
       pur_hist <-  pur_hist[!(is.na(pur_hist$item) | pur_hist$item==""), ]
       
-      output$purchase_history <- DT::renderDataTable(datatable(pur_hist, 
-                                                               colnames=c("Item", "Unit price ($/ea or /kg)", "Total price ($)", 
-                                                                          "Purchase date", "Store")))
+      # output$purchase_history <- DT::renderDataTable(datatable(pur_hist, 
+      #                                                          colnames=c("Item", "Unit price ($/ea or /kg)", "Total price ($)", 
+      #                                                                     "Purchase date", "Store")))
+      
+      orange_pal <- function(x) rgb(colorRamp(c("#ffe4cc", "#ffb54d"))(x), maxColorValue = 255)
+    
+      
+      output$purchase_history <- renderReactable({
+                                                      reactable(pur_hist, 
+                                                                searchable = TRUE,
+                                                                filterable = TRUE,
+                                                                showPageSizeOptions = TRUE, 
+                                                                pageSizeOptions = c(5, 10, 15),
+                                                                defaultPageSize = 15,
+                                                                defaultSorted = list(date='desc'),
+                                                                defaultColDef = colDef(
+                                                                  footerStyle = list(fontWeight = "bold"),
+                                                                  style = JS("function(rowInfo, colInfo, state) {
+                                                                        // Highlight sorted columns
+                                                                        for (var i = 0; i < state.sorted.length; i++) {
+                                                                          if (state.sorted[i].id === colInfo.id) {
+                                                                            return { background: 'rgba(0, 0, 0, 0.03)' }
+                                                                          }
+                                                                        }
+                                                                      }")),
+                                                                columns = list(
+                                                                  item = colDef(name='Item'),
+                                                                  store = colDef(name='Store'),
+                                                                  date = colDef(name='Date', html=TRUE,
+                                                                                footer = "<b>Total</b>"),
+                                                                  unitprice = colDef(
+                                                                    name='Unit price ($)',
+                                                                    format = colFormat(currency = "USD", separators = TRUE, locales = "en-US"),
+                                                                    html = TRUE, align = "left", header = JS("
+                                                                      function(colInfo) {
+                                                                        return colInfo.column.name + '<div style=\"color: #999\">/ea or /kg</div>'
+                                                                      }
+                                                                    ")
+                                                                                     ),
+                                                                  totalprice = colDef(
+                                                                    name='Total price ($)',
+                                                                    html=TRUE,
+                                                                    format = colFormat(currency = "USD", separators = TRUE, locales = "en-US"),
+                                                                    footer = JS("function(colInfo) {
+                                                                              var values = colInfo.data.map(function(row) {
+                                                                                return row[colInfo.column.id]
+                                                                              })
+                                                                              var total = values.reduce(function(a, b) { return a + b }, 0)
+                                                                              return '<b>$' + total.toFixed(2) + '</b>'
+                                                                            }"),
+                                                                    style = function(value) {
+                                                                      normalized <- (value - min(pur_hist$totalprice)) / (max(pur_hist$totalprice) - min(pur_hist$totalprice))
+                                                                      color <- orange_pal(normalized)
+                                                                      list(background = color)
+                                                                    }
+                                                                  )
+                                                                  
+                                                                ))
+                                                    })
       
       
-      
-      output$totalBox <- renderValueBox({
+      output$totalBox_thismonth <- renderValueBox({
         pur_hist <- pur_hist %>%
           separate('date', sep="-", into = c("year", "month", "day"))
         
@@ -650,7 +726,7 @@ server <- function(input, output, session) {
         )
       })
       
-      output$totalBox2 <- renderValueBox({
+      output$totalBox_lastmonth <- renderValueBox({
         pur_hist <- pur_hist %>%
           separate('date', sep="-", into = c("year", "month", "day"))
         
@@ -664,16 +740,29 @@ server <- function(input, output, session) {
           sum(pur_hist_last_month['totalprice']),
           "Spent last month",
           icon = icon("time", lib = "glyphicon"),
-          color = "green"
+          color = "orange"
         )
       })
       
-      output$totalBox3 <- renderValueBox({
+      output$totalBox_topstore <- renderValueBox({
+        pur_hist <- pur_hist %>%
+          separate('date', sep="-", into = c("year", "month", "day"))
+        
+        curr_month <- format(Sys.Date(), "%m")
+        
+        pur_hist_curr_month <- pur_hist[pur_hist$month == curr_month, ]
+        
+        df <- pur_hist_curr_month %>% 
+          group_by(store) %>%
+          summarise(store_total=sum(totalprice))
+        
+        store_max <- df$store[which.max(df$store_total)]
+        
         valueBox(
-          "Items",
-          "Median purchase size",
+          store_max,
+          "Top store this month",
           icon = icon("shopping-cart", lib = "glyphicon"),
-          color = "orange"
+          color = "green"
         )
       })
       

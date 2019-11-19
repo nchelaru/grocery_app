@@ -175,8 +175,8 @@ con <- dbConnect(
 
 ```{r}
 query <- "UPDATE grocery
-          SET store='H-Mart'
-          WHERE store='H Mart'"
+          SET item='KKM SASHIMI SOYSAUCE'
+          WHERE item='KKM SASHIMI SOYSAUCE 29'"
 
 dbSendStatement(con, query)
 ```
