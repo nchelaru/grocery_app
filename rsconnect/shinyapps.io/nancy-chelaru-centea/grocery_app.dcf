@@ -5,9 +5,9 @@ account: nancy-chelaru-centea
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1221846
-bundleId: 2602312
+bundleId: 2641833
 url: https://nancy-chelaru-centea.shinyapps.io/grocery_app/
-when: 1574213472.7396
+when: 1575496206.50143
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: receipt_parsing.nb.html|receipt_parsing.Rmd|scratch_file.R

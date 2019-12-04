@@ -271,9 +271,9 @@ body <- dashboardBody(tabItems(
   ),
   tabItem(tabName = "history",
           fluidPage(
-            # fluidRow(valueBoxOutput("totalBox_thismonth"), 
-            #          valueBoxOutput("totalBox_topstore"),
-            #          valueBoxOutput("totalBox_lastmonth")), 
+            fluidRow(valueBoxOutput("totalBox_thismonth"),
+                     valueBoxOutput("totalBox_topstore"),
+                     valueBoxOutput("totalBox_lastmonth")),
             fluidRow(tabBox(tabPanel("Detailed history", 
                                      #withSpinner(DTOutput("purchase_history"), type=2), 
                                      reactableOutput("purchase_history"),
@@ -816,61 +816,61 @@ server <- function(input, output, session) {
                                                     })
       
       
-      # output$totalBox_thismonth <- renderValueBox({
-      #   pur_hist <- pur_hist %>%
-      #     separate('date', sep="-", into = c("year", "month", "day"))
-      #   
-      #   curr_month <- format(Sys.Date(), "%m")
-      #   
-      #   pur_hist_curr_month <- pur_hist[pur_hist$month == curr_month, ]
-      #   
-      #   valueBox(
-      #     value=paste0("$", sum(pur_hist_curr_month['totalprice'])),
-      #     "Spent this month",
-      #     icon = icon("usd", lib = "glyphicon"),
-      #     color = "red"
-      #   )
-      # })
-      # 
-      # output$totalBox_lastmonth <- renderValueBox({
-      #   pur_hist <- pur_hist %>%
-      #     separate('date', sep="-", into = c("year", "month", "day"))
-      #   
-      #   curr_month <- format(Sys.Date(), "%m")
-      #   
-      #   last_month = as.numeric(curr_month) - 1
-      #   
-      #   pur_hist_last_month <- pur_hist[pur_hist$month == last_month, ]
-      #   
-      #   valueBox(
-      #     value=paste0("$", sum(pur_hist_last_month['totalprice'])),
-      #     "Spent last month",
-      #     icon = icon("time", lib = "glyphicon"),
-      #     color = "orange"
-      #   )
-      # })
-      # 
-      # output$totalBox_topstore <- renderValueBox({
-      #   pur_hist <- pur_hist %>%
-      #     separate('date', sep="-", into = c("year", "month", "day"))
-      #   
-      #   curr_month <- format(Sys.Date(), "%m")
-      #   
-      #   pur_hist_curr_month <- pur_hist[pur_hist$month == curr_month, ]
-      #   
-      #   df <- pur_hist_curr_month %>% 
-      #     group_by(store) %>%
-      #     summarise(store_total=sum(totalprice))
-      #   
-      #   store_max <- df$store[which.max(df$store_total)]
-      #   
-      #   valueBox(
-      #     store_max,
-      #     "Top store this month",
-      #     icon = icon("shopping-cart", lib = "glyphicon"),
-      #     color = "green"
-      #   )
-      # })
+      output$totalBox_thismonth <- renderValueBox({
+        pur_hist <- pur_hist %>%
+          separate('date', sep="-", into = c("year", "month", "day"))
+
+        curr_month <- format(Sys.Date(), "%m")
+
+        pur_hist_curr_month <- pur_hist[pur_hist$month == curr_month, ]
+
+        valueBox(
+          value=paste0("$", sum(pur_hist_curr_month['totalprice'])),
+          "Spent this month",
+          icon = icon("usd", lib = "glyphicon"),
+          color = "red"
+        )
+      })
+
+      output$totalBox_lastmonth <- renderValueBox({
+        pur_hist <- pur_hist %>%
+          separate('date', sep="-", into = c("year", "month", "day"))
+
+        curr_month <- format(Sys.Date(), "%m")
+
+        last_month = as.numeric(curr_month) - 1
+
+        pur_hist_last_month <- pur_hist[pur_hist$month == last_month, ]
+
+        valueBox(
+          value=paste0("$", sum(pur_hist_last_month['totalprice'])),
+          "Spent last month",
+          icon = icon("time", lib = "glyphicon"),
+          color = "orange"
+        )
+      })
+
+      output$totalBox_topstore <- renderValueBox({
+        pur_hist <- pur_hist %>%
+          separate('date', sep="-", into = c("year", "month", "day"))
+
+        curr_month <- format(Sys.Date(), "%m")
+
+        pur_hist_curr_month <- pur_hist[pur_hist$month == curr_month, ]
+
+        df <- pur_hist_curr_month %>%
+          group_by(store) %>%
+          summarise(store_total=sum(totalprice))
+
+        store_max <- df$store[which.max(df$store_total)]
+
+        valueBox(
+          store_max,
+          "Top store this month",
+          icon = icon("shopping-cart", lib = "glyphicon"),
+          color = "green"
+        )
+      })
       
       output$dat_heatmap <- renderPlotly({
         date_heatmap()
