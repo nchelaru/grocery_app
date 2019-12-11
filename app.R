@@ -195,7 +195,7 @@ body <- dashboardBody(tabItems(
                     br(),
                     HTML("<br><br><font size='4'><b>5. Save to database!</b></font><br><br>"),
                     actionButton("submit", HTML("<font size='4'>Submit</font>"), class = "btn-warning"),
-                    br(), br(), hr(), br(), br(),
+                    br(),  hr(),
                     shinyjs::hidden(span(id = "submit_msg", "Submitting..."),
                                     div(id = "error",
                                         div(
@@ -254,7 +254,7 @@ body <- dashboardBody(tabItems(
         column(7, 
                box(
                    br(),
-                   div(slickROutput("slick_output", width='100%', height='550px'),
+                   div(slickROutput("slick_output", width='100%', height='550px'),  
                        style='margin:30px'),
                    div(rHandsontableOutput("contents") %>% withSpinner(type = 1), 
                        style='margin:30px;font-size:17px;'),
@@ -442,9 +442,9 @@ server <- function(input, output, session) {
   })
   
   
-  term <- reactive({
-    input$search_box
-  })
+  # term <- reactive({
+  #   input$search_box
+  # })
   
   observeEvent(input$receipt_modal, {
     showModal(tags$div(id="modal1", modalDialog(
@@ -921,7 +921,7 @@ server <- function(input, output, session) {
         prettyRadioButtons(
           "select_store",
           h4("See items at:"),
-          choices = unique_stores(input$search_box),
+          choices = unique_stores(search_term), ## input$search_box
           selected = NULL,
           inline = FALSE,
           width = NULL
