@@ -838,16 +838,27 @@ server <- function(input, output, session) {
 
         curr_month <- format(Sys.Date(), "%m")
 
-        last_month = as.numeric(curr_month) - 1
-
-        pur_hist_last_month <- pur_hist[pur_hist$month == last_month, ]
-
-        valueBox(
-          value=paste0("$", sum(pur_hist_last_month['totalprice'])),
-          "Spent last month",
-          icon = icon("time", lib = "glyphicon"),
-          color = "orange"
-        )
+        if (as.numeric(curr_month) == 1) {
+          pur_hist_last_month <- pur_hist[pur_hist$month == 12, ]
+          
+          valueBox(
+            value=paste0("$", sum(pur_hist_last_month['totalprice'])),
+            "Spent last month",
+            icon = icon("time", lib = "glyphicon"),
+            color = "orange"
+          )
+        } else {
+          last_month = as.numeric(curr_month) - 1
+          
+          pur_hist_last_month <- pur_hist[pur_hist$month == last_month, ]
+          
+          valueBox(
+            value=paste0("$", sum(pur_hist_last_month['totalprice'])),
+            "Spent last month",
+            icon = icon("time", lib = "glyphicon"),
+            color = "orange"
+          )
+        }
       })
 
       output$totalBox_topstore <- renderValueBox({
