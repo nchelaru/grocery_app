@@ -837,9 +837,13 @@ server <- function(input, output, session) {
           separate('date', sep="-", into = c("year", "month", "day"))
 
         curr_month <- format(Sys.Date(), "%m")
+        
+        #print(curr_month)
 
         if (as.numeric(curr_month) == 1) {
           pur_hist_last_month <- pur_hist[pur_hist$month == 12, ]
+          
+          #print(pur_hist_last_month)
           
           valueBox(
             value=paste0("$", sum(pur_hist_last_month['totalprice'])),
@@ -850,7 +854,11 @@ server <- function(input, output, session) {
         } else {
           last_month = as.numeric(curr_month) - 1
           
-          pur_hist_last_month <- pur_hist[pur_hist$month == last_month, ]
+          #print(last_month)
+          
+          pur_hist_last_month <- pur_hist[pur_hist$month == sprintf("%02d", as.numeric(last_month)), ]
+          
+          print(pur_hist_last_month)
           
           valueBox(
             value=paste0("$", sum(pur_hist_last_month['totalprice'])),
